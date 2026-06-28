@@ -1,33 +1,19 @@
 import tailwindcss from '@tailwindcss/vite';
-import adapter from '@sveltejs/adapter-auto';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const base = process.env.NODE_ENV === 'production' ? '/cheme-tracker' : '';
+
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
-		sveltekit({
-			compilerOptions: {
-				runes: ({ filename }) =>
-					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
-			},
-			adapter: adapter()
-		}),
+		sveltekit(),
 		VitePWA({
 			registerType: 'autoUpdate',
+			base,
 			workbox: {
-				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}'],
-				runtimeCaching: [
-					{
-						urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
-						handler: 'CacheFirst',
-						options: {
-							cacheName: 'google-fonts',
-							expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 }
-						}
-					}
-				]
+				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}']
 			},
 			manifest: {
 				name: 'Chemo Tracker',
@@ -37,17 +23,17 @@ export default defineConfig({
 				background_color: '#f8fafc',
 				display: 'standalone',
 				orientation: 'portrait',
-				scope: '/',
-				start_url: '/',
+				scope: `${base}/`,
+				start_url: `${base}/`,
 				icons: [
 					{
-						src: '/icon-192.svg',
+						src: `${base}/icon-192.svg`,
 						sizes: '192x192',
 						type: 'image/svg+xml',
 						purpose: 'any maskable'
 					},
 					{
-						src: '/icon-192.svg',
+						src: `${base}/icon-192.svg`,
 						sizes: '512x512',
 						type: 'image/svg+xml',
 						purpose: 'any maskable'
