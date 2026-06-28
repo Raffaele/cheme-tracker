@@ -171,7 +171,7 @@
 	});
 
 	// Active tab
-	let activeTab = $state<'summary' | 'share'>('summary');
+	let activeTab = $state<'summary' | 'share' | 'settings'>('summary');
 
 	// Sync html[lang] to active locale
 	$effect(() => {
@@ -191,28 +191,9 @@
 <div class="min-h-screen bg-slate-50 pb-24">
 	<!-- Header -->
 	<header class="sticky top-0 z-10 bg-white border-b border-slate-200 px-4 py-5 shadow-sm">
-		<div class="max-w-lg mx-auto flex items-start justify-between gap-4">
-			<div>
-				<p class="text-xs font-medium uppercase tracking-widest text-slate-600">{i18n.t('app_name')}</p>
-				<h1 class="mt-0.5 text-lg font-semibold capitalize text-slate-900">{todayFormatted}</h1>
-			</div>
-			<!-- Language switcher -->
-			<div class="flex flex-col items-end gap-2 pt-1">
-				<div class="flex items-center gap-1" role="group" aria-label="Language">
-					{#each locales as code (code)}
-						<button
-							onclick={() => i18n.setLocale(code)}
-							aria-label={LOCALE_LABELS[code]}
-							aria-pressed={i18n.locale === code}
-							class="rounded-md px-2 py-1 text-xs font-medium uppercase transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 min-h-[44px] min-w-[44px] {i18n.locale === code
-								? 'bg-blue-100 text-blue-700'
-								: 'text-slate-600 hover:text-slate-800 hover:bg-slate-100'}"
-						>
-							{code}
-						</button>
-					{/each}
-				</div>
-			</div>
+		<div class="max-w-lg mx-auto">
+			<p class="text-xs font-medium uppercase tracking-widest text-slate-600">{i18n.t('app_name')}</p>
+			<h1 class="mt-0.5 text-lg font-semibold capitalize text-slate-900">{todayFormatted}</h1>
 		</div>
 	</header>
 
@@ -399,67 +380,17 @@
 
 			<!-- Water intake -->
 			<div class="mt-4">
-				<div class="flex items-center justify-between">
-					<div class="flex items-center gap-2">
-						<span aria-hidden="true" class="text-xl">💧</span>
-						<div>
-							<p class="text-sm font-medium text-slate-800">{i18n.t('water_label')}</p>
-							<p class="text-xs text-slate-600">
-								{tracker.todayLog.waterMl} ml · {waterCups} {i18n.t('water_cups')} · {i18n.t('water_goal')} {tracker.waterGoalMl} ml
-							</p>
-						</div>
+				<div class="flex items-center gap-2 mb-3">
+					<span aria-hidden="true" class="text-xl">💧</span>
+					<div>
+						<p class="text-sm font-medium text-slate-800">{i18n.t('water_label')}</p>
+						<p class="text-xs text-slate-600">
+							{tracker.todayLog.waterMl} ml · {waterCups} {i18n.t('water_cups')} · {i18n.t('water_goal')} {tracker.waterGoalMl} ml
+						</p>
 					</div>
-					<button
-						onclick={() => (showWaterConfig = !showWaterConfig)}
-						class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 min-h-[44px] min-w-[44px] flex items-center justify-center"
-						aria-label={i18n.t('water_config_aria')}
-						aria-expanded={showWaterConfig}
-					>
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-							<path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-						</svg>
-					</button>
 				</div>
 
-				{#if showWaterConfig}
-					<div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
-						<p id="water-config-hint" class="mb-2 text-xs font-medium text-slate-600">{i18n.t('water_config_hint')}</p>
-						<div class="flex flex-wrap gap-2" role="group" aria-describedby="water-config-hint">
-							{#each tracker.allWaterButtons as btn (btn.id)}
-								{@const isActive = tracker.activeWaterButtons.includes(btn.id)}
-								<button
-									onclick={() => tracker.toggleWaterButton(btn.id)}
-									aria-pressed={isActive}
-									class="flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 min-h-[44px] {isActive
-										? 'border-blue-300 bg-blue-100 text-blue-700'
-										: 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}"
-								>
-									<span aria-hidden="true">{btn.emoji}</span>
-									<span>{btn.label}</span>
-									<span class="text-[10px] opacity-70">{btn.shortLabel}</span>
-								</button>
-							{/each}
-						</div>
-						<div class="mt-3 border-t border-slate-200 pt-3">
-							<label for="water-goal-input" class="mb-2 block text-xs font-medium text-slate-600">{i18n.t('water_goal_label')}</label>
-							<div class="flex items-center gap-2">
-								<input
-									id="water-goal-input"
-									type="number"
-									min="100"
-									step="100"
-									bind:value={waterGoalInput}
-									onchange={applyWaterGoal}
-									class="w-28 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
-								/>
-								<span class="text-xs text-slate-600" aria-hidden="true">ml</span>
-								<span class="text-xs text-slate-600">({(waterGoalInput / 1000).toFixed(2).replace(/\.?0+$/, '')} L)</span>
-							</div>
-						</div>
-					</div>
-				{/if}
-
-				<div class="mt-3 flex flex-wrap gap-2">
+				<div class="flex flex-wrap gap-2">
 					{#if tracker.activeWaterButtonDefs.length === 0}
 						<p class="text-xs text-slate-600 italic">{i18n.t('water_no_buttons')}</p>
 					{:else}
@@ -930,6 +861,71 @@
 				</button>
 			</div>
 		{/if}
+	{:else if activeTab === 'settings'}
+		<!-- Lingua -->
+		<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+			<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-600 mb-4">
+				{i18n.t('settings_language_title')}
+			</h2>
+			<div class="flex flex-wrap gap-2" role="group" aria-label={i18n.t('settings_language_title')}>
+				{#each locales as code (code)}
+					<button
+						onclick={() => i18n.setLocale(code)}
+						aria-label={LOCALE_LABELS[code]}
+						aria-pressed={i18n.locale === code}
+						class="flex-1 rounded-xl border px-3 py-3 text-sm font-medium uppercase transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 min-h-[44px] {i18n.locale === code
+							? 'border-blue-300 bg-blue-100 text-blue-700'
+							: 'border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300 hover:bg-slate-100'}"
+					>
+						{code}
+					</button>
+				{/each}
+			</div>
+		</div>
+
+		<!-- Acqua -->
+		<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+			<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-600 mb-4">
+				{i18n.t('settings_water_title')}
+			</h2>
+
+			<!-- Obiettivo giornaliero -->
+			<div class="mb-5">
+				<label for="water-goal-input" class="mb-2 block text-xs font-medium text-slate-600">{i18n.t('water_goal_label')}</label>
+				<div class="flex items-center gap-2">
+					<input
+						id="water-goal-input"
+						type="number"
+						min="100"
+						step="100"
+						bind:value={waterGoalInput}
+						onchange={applyWaterGoal}
+						class="w-28 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+					/>
+					<span class="text-xs text-slate-600" aria-hidden="true">ml</span>
+					<span class="text-xs text-slate-600">({(waterGoalInput / 1000).toFixed(2).replace(/\.?0+$/, '')} L)</span>
+				</div>
+			</div>
+
+			<!-- Bottoni attivi -->
+			<p id="water-config-hint" class="mb-2 text-xs font-medium text-slate-600">{i18n.t('water_config_hint')}</p>
+			<div class="flex flex-wrap gap-2" role="group" aria-describedby="water-config-hint">
+				{#each tracker.allWaterButtons as btn (btn.id)}
+					{@const isActive = tracker.activeWaterButtons.includes(btn.id)}
+					<button
+						onclick={() => tracker.toggleWaterButton(btn.id)}
+						aria-pressed={isActive}
+						class="flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 min-h-[44px] {isActive
+							? 'border-blue-300 bg-blue-100 text-blue-700'
+							: 'border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300'}"
+					>
+						<span aria-hidden="true">{btn.emoji}</span>
+						<span>{btn.label}</span>
+						<span class="text-[10px] opacity-70">{btn.shortLabel}</span>
+					</button>
+				{/each}
+			</div>
+		</div>
 	{/if}
 	</main>
 
@@ -941,7 +937,7 @@
 		<button
 			onclick={() => (activeTab = 'summary')}
 			aria-current={activeTab === 'summary' ? 'page' : undefined}
-			class="flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset min-h-[56px] {activeTab === 'summary' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-700'}"
+			class="relative flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset min-h-[56px] {activeTab === 'summary' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-700'}"
 		>
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 				<path d="M2 4a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zM2 8a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zM2 12a1 1 0 011-1h8a1 1 0 110 2H3a1 1 0 01-1-1z" />
@@ -961,6 +957,19 @@
 			</svg>
 			{i18n.t('tab_share')}
 			{#if activeTab === 'share'}
+				<span class="absolute bottom-0 left-1/2 h-0.5 w-12 -translate-x-1/2 rounded-full bg-blue-600"></span>
+			{/if}
+		</button>
+		<button
+			onclick={() => (activeTab = 'settings')}
+			aria-current={activeTab === 'settings' ? 'page' : undefined}
+			class="relative flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset min-h-[56px] {activeTab === 'settings' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-700'}"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+				<path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+			</svg>
+			{i18n.t('tab_settings')}
+			{#if activeTab === 'settings'}
 				<span class="absolute bottom-0 left-1/2 h-0.5 w-12 -translate-x-1/2 rounded-full bg-blue-600"></span>
 			{/if}
 		</button>

@@ -104,5 +104,8 @@ export default {
 	qr_title: 'Teilen oder installieren',
 	qr_description: 'Mit einem anderen Gerät scannen, um die App zu öffnen',
 	tab_summary: 'Übersicht',
-	tab_share: 'Teilen'
+	tab_share: 'Teilen',
+	tab_settings: 'Einstellungen',
+	settings_language_title: 'Sprache',
+	settings_water_title: 'Wasser'
 } as const;

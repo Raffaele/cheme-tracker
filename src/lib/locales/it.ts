@@ -115,5 +115,8 @@ export default {
 	qr_title: 'Condividi o installa',
 	qr_description: 'Scansiona con un altro dispositivo per aprire l\'app',
 	tab_summary: 'Sintesi',
-	tab_share: 'Condivisione'
+	tab_share: 'Condivisione',
+	tab_settings: 'Impostazioni',
+	settings_language_title: 'Lingua',
+	settings_water_title: 'Acqua'
 } as const;
