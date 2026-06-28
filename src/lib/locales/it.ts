@@ -68,6 +68,20 @@ export default {
 	history_title: 'Storico ultimi 30 giorni',
 
 	// Install & QR
+	food_title: 'Cibi da consumare',
+	food_empty: 'Nessun cibo aggiunto',
+	food_add: '+ Aggiungi',
+	food_cancel: 'Annulla',
+	food_name_input: 'Nome del cibo',
+	food_days_input: 'Entro quanti giorni',
+	food_save: 'Aggiungi cibo',
+	food_remove_aria: 'Rimuovi cibo',
+	food_expires: 'Entro il',
+	food_alert_title: 'Cibi da consumare oggi',
+
+	bowel_alert_title: 'Attenzione',
+	bowel_alert_msg: 'Nessuna evacuazione registrata da {days} giorni.',
+
 	install_btn: 'Installa app',
 	qr_title: 'Condividi o installa',
 	qr_description: 'Scansiona con un altro dispositivo per aprire l\'app'

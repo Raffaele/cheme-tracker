@@ -57,6 +57,20 @@ export default {
 
 	history_title: 'Últimos 30 días',
 
+	food_title: 'Alimentos por consumir',
+	food_empty: 'Ningún alimento añadido',
+	food_add: '+ Añadir',
+	food_cancel: 'Cancelar',
+	food_name_input: 'Nombre del alimento',
+	food_days_input: 'Días hasta la caducidad',
+	food_save: 'Añadir alimento',
+	food_remove_aria: 'Eliminar alimento',
+	food_expires: 'Antes del',
+	food_alert_title: 'Alimentos a consumir hoy',
+
+	bowel_alert_title: 'Atención',
+	bowel_alert_msg: 'No se ha registrado ninguna deposición en {days} días.',
+
 	install_btn: 'Instalar aplicación',
 	qr_title: 'Compartir o instalar',
 	qr_description: 'Escanea con otro dispositivo para abrir la aplicación'

@@ -57,6 +57,20 @@ export default {
 
 	history_title: '30 derniers jours',
 
+	food_title: 'Aliments à consommer',
+	food_empty: 'Aucun aliment ajouté',
+	food_add: '+ Ajouter',
+	food_cancel: 'Annuler',
+	food_name_input: 'Nom de l\'aliment',
+	food_days_input: 'Jours avant expiration',
+	food_save: 'Ajouter l\'aliment',
+	food_remove_aria: 'Supprimer l\'aliment',
+	food_expires: 'Avant le',
+	food_alert_title: 'Aliments à consommer aujourd\'hui',
+
+	bowel_alert_title: 'Attention',
+	bowel_alert_msg: 'Aucune selle enregistrée depuis {days} jours.',
+
 	install_btn: 'Installer l\'application',
 	qr_title: 'Partager ou installer',
 	qr_description: 'Scannez avec un autre appareil pour ouvrir l\'application'

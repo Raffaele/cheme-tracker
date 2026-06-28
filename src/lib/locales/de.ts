@@ -57,6 +57,20 @@ export default {
 
 	history_title: 'Letzte 30 Tage',
 
+	food_title: 'Zu verzehrende Lebensmittel',
+	food_empty: 'Keine Lebensmittel hinzugefügt',
+	food_add: '+ Hinzufügen',
+	food_cancel: 'Abbrechen',
+	food_name_input: 'Name des Lebensmittels',
+	food_days_input: 'Tage bis zum Ablauf',
+	food_save: 'Lebensmittel hinzufügen',
+	food_remove_aria: 'Lebensmittel entfernen',
+	food_expires: 'Bis zum',
+	food_alert_title: 'Heute zu verzehrende Lebensmittel',
+
+	bowel_alert_title: 'Achtung',
+	bowel_alert_msg: 'Seit {days} Tagen kein Stuhlgang aufgezeichnet.',
+
 	install_btn: 'App installieren',
 	qr_title: 'Teilen oder installieren',
 	qr_description: 'Mit einem anderen Gerät scannen, um die App zu öffnen'

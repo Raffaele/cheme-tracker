@@ -57,6 +57,20 @@ export default {
 
 	history_title: 'Last 30 days',
 
+	food_title: 'Foods to consume',
+	food_empty: 'No food added',
+	food_add: '+ Add',
+	food_cancel: 'Cancel',
+	food_name_input: 'Food name',
+	food_days_input: 'Days until expiry',
+	food_save: 'Add food',
+	food_remove_aria: 'Remove food',
+	food_expires: 'By',
+	food_alert_title: 'Foods to consume today',
+
+	bowel_alert_title: 'Warning',
+	bowel_alert_msg: 'No bowel movement recorded for {days} days.',
+
 	install_btn: 'Install app',
 	qr_title: 'Share or install',
 	qr_description: 'Scan with another device to open the app'

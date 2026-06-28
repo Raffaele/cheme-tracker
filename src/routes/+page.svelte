@@ -6,6 +6,8 @@
 	import { browser } from '$app/environment';
 
 	let showAppointmentForm = $state(false);
+	let showFoodForm = $state(false);
+	let newFood = $state({ name: '', days: 1 });
 	let showWaterConfig = $state(false);
 	let waterGoalInput = $state(tracker.waterGoalMl);
 
@@ -49,6 +51,14 @@
 
 	function submitCycleStart() {
 		if (cycleStartInput) tracker.setCycleStartDate(cycleStartInput);
+	}
+
+	function submitFood() {
+		if (newFood.name.trim() && newFood.days >= 0) {
+			tracker.addFood(newFood.name.trim(), newFood.days);
+			newFood = { name: '', days: 1 };
+			showFoodForm = false;
+		}
 	}
 
 	function submitAppointment() {
@@ -124,6 +134,32 @@
 	</header>
 
 	<main class="mx-auto max-w-lg space-y-4 px-4 pt-5">
+		{#if tracker.foodsDueToday.length > 0}
+			<div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 flex items-start gap-3">
+				<span class="text-xl shrink-0">🍽️</span>
+				<div class="min-w-0">
+					<p class="text-sm font-semibold text-amber-700">{i18n.t('food_alert_title')}</p>
+					<ul class="mt-1 space-y-0.5">
+						{#each tracker.foodsDueToday as food (food.id)}
+							{@const isExpired = food.consumeBy < new Date().toISOString().split('T')[0]}
+							<li class="text-sm {isExpired ? 'line-through text-amber-400' : 'text-amber-600'}">· {food.name}</li>
+						{/each}
+					</ul>
+				</div>
+			</div>
+		{/if}
+
+		{#if tracker.daysSinceLastBowelMovement === null || tracker.daysSinceLastBowelMovement > 2}
+			<div class="rounded-2xl border border-rose-200 bg-rose-50 p-4 flex items-start gap-3">
+				<span class="text-xl shrink-0">⚠️</span>
+				<div>
+					<p class="text-sm font-semibold text-rose-700">{i18n.t('bowel_alert_title')}</p>
+					<p class="mt-0.5 text-sm text-rose-600">
+						{i18n.t('bowel_alert_msg').replace('{days}', String(tracker.daysSinceLastBowelMovement ?? '30+'))}
+					</p>
+				</div>
+			</div>
+		{/if}
 		<!-- Setup card -->
 		{#if !tracker.cycleStartDate}
 			<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
@@ -392,6 +428,74 @@
 								onclick={() => tracker.removeAppointment(appointment.id)}
 								class="text-slate-300 hover:text-rose-400 transition-colors text-lg leading-none shrink-0"
 								aria-label={i18n.t('appointments_remove_aria')}
+							>×</button>
+						</div>
+					{/each}
+				{/if}
+			</div>
+		</div>
+
+		<!-- Foods -->
+		<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
+			<div class="flex items-center justify-between">
+				<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-400">
+					{i18n.t('food_title')}
+				</h2>
+				<button
+					onclick={() => (showFoodForm = !showFoodForm)}
+					class="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-200 transition-colors"
+				>
+					{showFoodForm ? i18n.t('food_cancel') : i18n.t('food_add')}
+				</button>
+			</div>
+
+			{#if showFoodForm}
+				<div class="mt-4 space-y-3 rounded-xl bg-slate-50 p-4">
+					<input
+						type="text"
+						bind:value={newFood.name}
+						placeholder={i18n.t('food_name_input')}
+						class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
+					/>
+					<div class="flex items-center gap-3">
+						<label class="text-xs text-slate-500 whitespace-nowrap">{i18n.t('food_days_input')}</label>
+						<input
+							type="number"
+							min="0"
+							step="1"
+							bind:value={newFood.days}
+							class="w-24 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+						/>
+					</div>
+					<button
+						onclick={submitFood}
+						class="w-full rounded-lg bg-blue-600 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+					>
+						{i18n.t('food_save')}
+					</button>
+				</div>
+			{/if}
+
+			<div class="mt-4 space-y-2">
+				{#if tracker.foods.length === 0}
+					<p class="text-center text-sm text-slate-400 py-4">{i18n.t('food_empty')}</p>
+				{:else}
+					{#each tracker.foods.slice().sort((a, b) => a.consumeBy.localeCompare(b.consumeBy)) as food (food.id)}
+						{@const today = new Date().toISOString().split('T')[0]}
+						{@const isExpired = food.consumeBy < today}
+						{@const isDueToday = food.consumeBy === today}
+						<div class="flex items-center gap-3 rounded-xl px-3 py-2.5 {isDueToday ? 'bg-amber-50 border border-amber-200' : isExpired ? 'bg-slate-50 opacity-60' : 'bg-slate-50'}">
+							<span class="text-base">{isDueToday ? '⚠️' : isExpired ? '🗑️' : '🥗'}</span>
+							<div class="flex-1 min-w-0">
+								<p class="text-sm font-medium truncate {isExpired ? 'line-through text-slate-400' : 'text-slate-700'}">{food.name}</p>
+								<p class="text-xs {isDueToday ? 'text-amber-600 font-medium' : 'text-slate-400'}">
+									{i18n.t('food_expires')} {new Date(food.consumeBy + 'T00:00:00').toLocaleDateString(i18n.locale, { day: 'numeric', month: 'short' })}
+								</p>
+							</div>
+							<button
+								onclick={() => tracker.removeFood(food.id)}
+								class="text-slate-300 hover:text-rose-400 transition-colors text-lg leading-none shrink-0"
+								aria-label={i18n.t('food_remove_aria')}
 							>×</button>
 						</div>
 					{/each}

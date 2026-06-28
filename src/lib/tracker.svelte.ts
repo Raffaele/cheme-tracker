@@ -5,7 +5,8 @@ import type {
 	CyclePhase,
 	PhaseInfo,
 	WaterButton,
-	WaterButtonId
+	WaterButtonId,
+	FoodItem
 } from './types.js';
 import { i18n } from './i18n.svelte.js';
 
@@ -59,37 +60,26 @@ function toDateString(date: Date): string {
 }
 
 function loadData(): TrackerData {
-	if (typeof localStorage === 'undefined') {
-		return {
-			cycleStartDate: null,
-			logs: {},
-			appointments: [],
-			activeWaterButtons: DEFAULT_WATER_BUTTONS,
-			waterGoalMl: DEFAULT_WATER_GOAL_ML
-		};
-	}
+	const empty = (): TrackerData => ({
+		cycleStartDate: null,
+		logs: {},
+		appointments: [],
+		activeWaterButtons: DEFAULT_WATER_BUTTONS,
+		waterGoalMl: DEFAULT_WATER_GOAL_ML,
+		foods: []
+	});
+
+	if (typeof localStorage === 'undefined') return empty();
 	const raw = localStorage.getItem(STORAGE_KEY);
-	if (!raw)
-		return {
-			cycleStartDate: null,
-			logs: {},
-			appointments: [],
-			activeWaterButtons: DEFAULT_WATER_BUTTONS,
-			waterGoalMl: DEFAULT_WATER_GOAL_ML
-		};
+	if (!raw) return empty();
 	try {
 		const parsed = JSON.parse(raw) as TrackerData;
 		if (!parsed.activeWaterButtons) parsed.activeWaterButtons = DEFAULT_WATER_BUTTONS;
 		if (!parsed.waterGoalMl) parsed.waterGoalMl = DEFAULT_WATER_GOAL_ML;
+		if (!parsed.foods) parsed.foods = [];
 		return parsed;
 	} catch {
-		return {
-			cycleStartDate: null,
-			logs: {},
-			appointments: [],
-			activeWaterButtons: DEFAULT_WATER_BUTTONS,
-			waterGoalMl: DEFAULT_WATER_GOAL_ML
-		};
+		return empty();
 	}
 }
 
@@ -155,6 +145,20 @@ function createTracker() {
 		return days;
 	});
 
+	const foodsDueToday = $derived((): FoodItem[] => {
+		return data.foods.filter((f) => f.consumeBy <= todayString);
+	});
+
+	const daysSinceLastBowelMovement = $derived((): number | null => {
+		const todayMs = new Date(todayString).getTime();
+		const msPerDay = 1000 * 60 * 60 * 24;
+		for (let i = 0; i <= 30; i++) {
+			const dateStr = toDateString(new Date(todayMs - i * msPerDay));
+			if (data.logs[dateStr]?.isBowelMovementRecorded) return i;
+		}
+		return null;
+	});
+
 	const allWaterButtons = $derived((): WaterButton[] => getAllWaterButtons());
 
 	const activeWaterButtonDefs = $derived((): WaterButton[] => {
@@ -209,6 +213,18 @@ function createTracker() {
 		saveData(data);
 	}
 
+	function addFood(name: string, daysUntilExpiry: number): void {
+		const todayMs = new Date(todayString).getTime();
+		const consumeBy = toDateString(new Date(todayMs + daysUntilExpiry * 1000 * 60 * 60 * 24));
+		data.foods = [...data.foods, { id: crypto.randomUUID(), name, consumeBy }];
+		saveData(data);
+	}
+
+	function removeFood(id: string): void {
+		data.foods = data.foods.filter((f) => f.id !== id);
+		saveData(data);
+	}
+
 	function addAppointment(appointment: Omit<Appointment, 'id'>): void {
 		const id = crypto.randomUUID();
 		data.appointments = [...data.appointments, { ...appointment, id }];
@@ -253,6 +269,17 @@ function createTracker() {
 		},
 		get cycleDays() {
 			return CYCLE_DAYS;
+		},
+		get foods() {
+			return data.foods;
+		},
+		get foodsDueToday() {
+			return foodsDueToday();
+		},
+		addFood,
+		removeFood,
+		get daysSinceLastBowelMovement() {
+			return daysSinceLastBowelMovement();
 		},
 		get allWaterButtons() {
 			return allWaterButtons();

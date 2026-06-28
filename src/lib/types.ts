@@ -22,12 +22,19 @@ export interface WaterButton {
 	emoji: string;
 }
 
+export interface FoodItem {
+	id: string;
+	name: string;
+	consumeBy: string; // YYYY-MM-DD
+}
+
 export interface TrackerData {
 	cycleStartDate: string | null;
 	logs: Record<string, DayLog>;
 	appointments: Appointment[];
 	activeWaterButtons: WaterButtonId[];
 	waterGoalMl: number;
+	foods: FoodItem[];
 }
 
 export type CyclePhase = 1 | 2 | 3 | 4;
