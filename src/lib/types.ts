@@ -28,6 +28,14 @@ export interface FoodItem {
 	consumeBy: string; // YYYY-MM-DD
 }
 
+// days: 'everyday' | number[] where 0=Mon…6=Sun
+export interface Medicine {
+	id: string;
+	name: string;
+	days: 'everyday' | number[];
+	times: string[]; // HH:MM
+}
+
 export interface TrackerData {
 	cycleStartDate: string | null;
 	logs: Record<string, DayLog>;
@@ -35,6 +43,7 @@ export interface TrackerData {
 	activeWaterButtons: WaterButtonId[];
 	waterGoalMl: number;
 	foods: FoodItem[];
+	medicines: Medicine[];
 }
 
 export type CyclePhase = 1 | 2 | 3 | 4;

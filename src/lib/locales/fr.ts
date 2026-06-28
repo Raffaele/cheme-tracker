@@ -71,6 +71,26 @@ export default {
 	bowel_alert_title: 'Attention',
 	bowel_alert_msg: 'Aucune selle enregistrée depuis {days} jours.',
 
+	// Medicines
+	med_title: 'Médicaments',
+	med_empty: 'Aucun médicament configuré',
+	med_add: '+ Ajouter',
+	med_cancel: 'Annuler',
+	med_name_input: 'Nom du médicament',
+	med_everyday: 'Tous les jours',
+	med_days_label: 'Jours',
+	med_times_label: 'Horaires',
+	med_add_time: '+ Ajouter un horaire',
+	med_save: 'Enregistrer le médicament',
+	med_remove_aria: 'Supprimer le médicament',
+	med_day_0: 'Lun',
+	med_day_1: 'Mar',
+	med_day_2: 'Mer',
+	med_day_3: 'Jeu',
+	med_day_4: 'Ven',
+	med_day_5: 'Sam',
+	med_day_6: 'Dim',
+
 	install_btn: 'Installer l\'application',
 	qr_title: 'Partager ou installer',
 	qr_description: 'Scannez avec un autre appareil pour ouvrir l\'application'

@@ -6,7 +6,8 @@ import type {
 	PhaseInfo,
 	WaterButton,
 	WaterButtonId,
-	FoodItem
+	FoodItem,
+	Medicine
 } from './types.js';
 import { i18n } from './i18n.svelte.js';
 
@@ -66,7 +67,8 @@ function loadData(): TrackerData {
 		appointments: [],
 		activeWaterButtons: DEFAULT_WATER_BUTTONS,
 		waterGoalMl: DEFAULT_WATER_GOAL_ML,
-		foods: []
+		foods: [],
+		medicines: []
 	});
 
 	if (typeof localStorage === 'undefined') return empty();
@@ -77,6 +79,7 @@ function loadData(): TrackerData {
 		if (!parsed.activeWaterButtons) parsed.activeWaterButtons = DEFAULT_WATER_BUTTONS;
 		if (!parsed.waterGoalMl) parsed.waterGoalMl = DEFAULT_WATER_GOAL_ML;
 		if (!parsed.foods) parsed.foods = [];
+		if (!parsed.medicines) parsed.medicines = [];
 		return parsed;
 	} catch {
 		return empty();
@@ -236,6 +239,26 @@ function createTracker() {
 		saveData(data);
 	}
 
+	// 0=Mon…6=Sun; JS getDay() returns 0=Sun…6=Sat → convert with (jsDay+6)%7
+	const todayWeekday = $derived((): number => (new Date().getDay() + 6) % 7);
+
+	const todaysMedicines = $derived((): Medicine[] => {
+		const wd = todayWeekday();
+		return data.medicines.filter(
+			(m) => m.days === 'everyday' || (m.days as number[]).includes(wd)
+		);
+	});
+
+	function addMedicine(medicine: Omit<Medicine, 'id'>): void {
+		data.medicines = [...data.medicines, { ...medicine, id: crypto.randomUUID() }];
+		saveData(data);
+	}
+
+	function removeMedicine(id: string): void {
+		data.medicines = data.medicines.filter((m) => m.id !== id);
+		saveData(data);
+	}
+
 	return {
 		get cycleStartDate() {
 			return data.cycleStartDate;
@@ -294,7 +317,15 @@ function createTracker() {
 		toggleWaterButton,
 		toggleBowelMovement,
 		addAppointment,
-		removeAppointment
+		removeAppointment,
+		get medicines() {
+			return data.medicines;
+		},
+		get todaysMedicines() {
+			return todaysMedicines();
+		},
+		addMedicine,
+		removeMedicine
 	};
 }
 

@@ -71,6 +71,26 @@ export default {
 	bowel_alert_title: 'Achtung',
 	bowel_alert_msg: 'Seit {days} Tagen kein Stuhlgang aufgezeichnet.',
 
+	// Medicines
+	med_title: 'Medikamente',
+	med_empty: 'Keine Medikamente konfiguriert',
+	med_add: '+ Hinzufügen',
+	med_cancel: 'Abbrechen',
+	med_name_input: 'Name des Medikaments',
+	med_everyday: 'Jeden Tag',
+	med_days_label: 'Tage',
+	med_times_label: 'Uhrzeiten',
+	med_add_time: '+ Uhrzeit hinzufügen',
+	med_save: 'Medikament speichern',
+	med_remove_aria: 'Medikament entfernen',
+	med_day_0: 'Mo',
+	med_day_1: 'Di',
+	med_day_2: 'Mi',
+	med_day_3: 'Do',
+	med_day_4: 'Fr',
+	med_day_5: 'Sa',
+	med_day_6: 'So',
+
 	install_btn: 'App installieren',
 	qr_title: 'Teilen oder installieren',
 	qr_description: 'Mit einem anderen Gerät scannen, um die App zu öffnen'

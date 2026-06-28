@@ -71,6 +71,26 @@ export default {
 	bowel_alert_title: 'Atención',
 	bowel_alert_msg: 'No se ha registrado ninguna deposición en {days} días.',
 
+	// Medicines
+	med_title: 'Medicamentos',
+	med_empty: 'Ningún medicamento configurado',
+	med_add: '+ Añadir',
+	med_cancel: 'Cancelar',
+	med_name_input: 'Nombre del medicamento',
+	med_everyday: 'Todos los días',
+	med_days_label: 'Días',
+	med_times_label: 'Horarios',
+	med_add_time: '+ Añadir horario',
+	med_save: 'Guardar medicamento',
+	med_remove_aria: 'Eliminar medicamento',
+	med_day_0: 'Lun',
+	med_day_1: 'Mar',
+	med_day_2: 'Mié',
+	med_day_3: 'Jue',
+	med_day_4: 'Vie',
+	med_day_5: 'Sáb',
+	med_day_6: 'Dom',
+
 	install_btn: 'Instalar aplicación',
 	qr_title: 'Compartir o instalar',
 	qr_description: 'Escanea con otro dispositivo para abrir la aplicación'

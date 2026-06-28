@@ -71,6 +71,26 @@ export default {
 	bowel_alert_title: 'Warning',
 	bowel_alert_msg: 'No bowel movement recorded for {days} days.',
 
+	// Medicines
+	med_title: 'Medicines',
+	med_empty: 'No medicines configured',
+	med_add: '+ Add',
+	med_cancel: 'Cancel',
+	med_name_input: 'Medicine name',
+	med_everyday: 'Every day',
+	med_days_label: 'Days',
+	med_times_label: 'Times',
+	med_add_time: '+ Add time',
+	med_save: 'Save medicine',
+	med_remove_aria: 'Remove medicine',
+	med_day_0: 'Mon',
+	med_day_1: 'Tue',
+	med_day_2: 'Wed',
+	med_day_3: 'Thu',
+	med_day_4: 'Fri',
+	med_day_5: 'Sat',
+	med_day_6: 'Sun',
+
 	install_btn: 'Install app',
 	qr_title: 'Share or install',
 	qr_description: 'Scan with another device to open the app'

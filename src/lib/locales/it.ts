@@ -82,6 +82,26 @@ export default {
 	bowel_alert_title: 'Attenzione',
 	bowel_alert_msg: 'Nessuna evacuazione registrata da {days} giorni.',
 
+	// Medicines
+	med_title: 'Medicine',
+	med_empty: 'Nessuna medicina configurata',
+	med_add: '+ Aggiungi',
+	med_cancel: 'Annulla',
+	med_name_input: 'Nome medicina',
+	med_everyday: 'Ogni giorno',
+	med_days_label: 'Giorni',
+	med_times_label: 'Orari',
+	med_add_time: '+ Aggiungi orario',
+	med_save: 'Salva medicina',
+	med_remove_aria: 'Rimuovi medicina',
+	med_day_0: 'Lun',
+	med_day_1: 'Mar',
+	med_day_2: 'Mer',
+	med_day_3: 'Gio',
+	med_day_4: 'Ven',
+	med_day_5: 'Sab',
+	med_day_6: 'Dom',
+
 	install_btn: 'Installa app',
 	qr_title: 'Condividi o installa',
 	qr_description: 'Scansiona con un altro dispositivo per aprire l\'app'
