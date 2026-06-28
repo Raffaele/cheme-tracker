@@ -6,11 +6,12 @@ import de from './locales/de.js';
 
 export type LocaleCode = 'it' | 'en' | 'fr' | 'es' | 'de';
 export type TranslationKey = keyof typeof it;
+export type Translations = Record<TranslationKey, string>;
 
 const STORAGE_KEY = 'chemo-tracker-locale';
 const DEFAULT_LOCALE: LocaleCode = 'it';
 
-const LOCALES: Record<LocaleCode, typeof it> = { it, en, fr, es, de };
+const LOCALES: Record<LocaleCode, Translations> = { it, en, fr, es, de };
 
 export const LOCALE_LABELS: Record<LocaleCode, string> = {
 	it: 'Italiano',

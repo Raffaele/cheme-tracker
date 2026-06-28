@@ -55,5 +55,9 @@ export default {
 	appointments_save: 'Save appointment',
 	appointments_remove_aria: 'Remove appointment',
 
-	history_title: 'Last 30 days'
+	history_title: 'Last 30 days',
+
+	install_btn: 'Install app',
+	qr_title: 'Share or install',
+	qr_description: 'Scan with another device to open the app'
 } as const;

@@ -65,5 +65,10 @@ export default {
 	appointments_remove_aria: 'Rimuovi appuntamento',
 
 	// History
-	history_title: 'Storico ultimi 30 giorni'
+	history_title: 'Storico ultimi 30 giorni',
+
+	// Install & QR
+	install_btn: 'Installa app',
+	qr_title: 'Condividi o installa',
+	qr_description: 'Scansiona con un altro dispositivo per aprire l\'app'
 } as const;

@@ -55,5 +55,9 @@ export default {
 	appointments_save: 'Guardar cita',
 	appointments_remove_aria: 'Eliminar cita',
 
-	history_title: 'Últimos 30 días'
+	history_title: 'Últimos 30 días',
+
+	install_btn: 'Instalar aplicación',
+	qr_title: 'Compartir o instalar',
+	qr_description: 'Escanea con otro dispositivo para abrir la aplicación'
 } as const;

@@ -55,5 +55,9 @@ export default {
 	appointments_save: 'Enregistrer le rendez-vous',
 	appointments_remove_aria: 'Supprimer le rendez-vous',
 
-	history_title: '30 derniers jours'
+	history_title: '30 derniers jours',
+
+	install_btn: 'Installer l\'application',
+	qr_title: 'Partager ou installer',
+	qr_description: 'Scannez avec un autre appareil pour ouvrir l\'application'
 } as const;

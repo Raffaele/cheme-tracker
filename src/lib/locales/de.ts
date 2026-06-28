@@ -55,5 +55,9 @@ export default {
 	appointments_save: 'Termin speichern',
 	appointments_remove_aria: 'Termin entfernen',
 
-	history_title: 'Letzte 30 Tage'
+	history_title: 'Letzte 30 Tage',
+
+	install_btn: 'App installieren',
+	qr_title: 'Teilen oder installieren',
+	qr_description: 'Mit einem anderen Gerät scannen, um die App zu öffnen'
 } as const;
