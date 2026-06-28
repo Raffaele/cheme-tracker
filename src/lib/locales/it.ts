@@ -82,6 +82,10 @@ export default {
 	bowel_alert_title: 'Attenzione',
 	bowel_alert_msg: 'Nessuna evacuazione registrata da {days} giorni.',
 
+	med_alert_title: 'Medicine da prendere',
+	med_alert_msg: '{name} alle {time}',
+	med_alert_now: 'adesso!',
+
 	// Medicines
 	med_title: 'Medicine',
 	med_empty: 'Nessuna medicina configurata',

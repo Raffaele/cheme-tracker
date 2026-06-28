@@ -5,6 +5,29 @@
 	import { renderSVG } from 'uqr';
 	import { browser } from '$app/environment';
 
+	// Reactive clock — updates every minute for medicine alerts
+	let nowMinutes = $state(getNowMinutes());
+	function getNowMinutes(): number {
+		const d = new Date();
+		return d.getHours() * 60 + d.getMinutes();
+	}
+	$effect(() => {
+		const id = setInterval(() => { nowMinutes = getNowMinutes(); }, 60_000);
+		return () => clearInterval(id);
+	});
+
+	// Medicine alerts: due within the next 30 minutes
+	const medicineAlerts = $derived(
+		tracker.todaysMedicines.flatMap((med) =>
+			med.times
+				.map((t) => {
+					const [h, m] = t.split(':').map(Number);
+					return { med, time: t, diffMin: h * 60 + m - nowMinutes };
+				})
+				.filter(({ diffMin }) => diffMin >= 0 && diffMin <= 30)
+		)
+	);
+
 	let showAppointmentForm = $state(false);
 	let showFoodForm = $state(false);
 	let newFood = $state({ name: '', days: 1 });
@@ -177,6 +200,28 @@
 	</header>
 
 	<main class="mx-auto max-w-lg space-y-4 px-4 pt-5">
+		<!-- Medicine alert -->
+		{#if medicineAlerts.length > 0}
+			<div role="alert" class="rounded-2xl border border-violet-200 bg-violet-50 p-4 flex items-start gap-3">
+				<span aria-hidden="true" class="text-xl shrink-0">💊</span>
+				<div class="min-w-0">
+					<p class="text-sm font-semibold text-violet-800">{i18n.t('med_alert_title')}</p>
+					<ul class="mt-1 space-y-0.5">
+						{#each medicineAlerts as { med, time, diffMin } (med.id + time)}
+							<li class="text-sm text-violet-700">
+								{i18n.t('med_alert_msg').replace('{name}', med.name).replace('{time}', time)}
+								{#if diffMin === 0}
+									<span class="font-semibold"> — {i18n.t('med_alert_now')}</span>
+								{:else}
+									<span class="opacity-75"> ({diffMin} min)</span>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</div>
+			</div>
+		{/if}
+
 		<!-- Food alert -->
 		{#if tracker.foodsDueToday.length > 0}
 			<div

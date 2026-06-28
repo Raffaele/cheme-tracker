@@ -71,6 +71,10 @@ export default {
 	bowel_alert_title: 'Warning',
 	bowel_alert_msg: 'No bowel movement recorded for {days} days.',
 
+	med_alert_title: 'Medicines due soon',
+	med_alert_msg: '{name} at {time}',
+	med_alert_now: 'now!',
+
 	// Medicines
 	med_title: 'Medicines',
 	med_empty: 'No medicines configured',

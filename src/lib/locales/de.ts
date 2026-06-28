@@ -71,6 +71,10 @@ export default {
 	bowel_alert_title: 'Achtung',
 	bowel_alert_msg: 'Seit {days} Tagen kein Stuhlgang aufgezeichnet.',
 
+	med_alert_title: 'Medikamente fällig',
+	med_alert_msg: '{name} um {time}',
+	med_alert_now: 'jetzt!',
+
 	// Medicines
 	med_title: 'Medikamente',
 	med_empty: 'Keine Medikamente konfiguriert',

@@ -71,6 +71,10 @@ export default {
 	bowel_alert_title: 'Attention',
 	bowel_alert_msg: 'Aucune selle enregistrée depuis {days} jours.',
 
+	med_alert_title: 'Médicaments à prendre',
+	med_alert_msg: '{name} à {time}',
+	med_alert_now: 'maintenant !',
+
 	// Medicines
 	med_title: 'Médicaments',
 	med_empty: 'Aucun médicament configuré',

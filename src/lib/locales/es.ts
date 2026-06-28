@@ -71,6 +71,10 @@ export default {
 	bowel_alert_title: 'Atención',
 	bowel_alert_msg: 'No se ha registrado ninguna deposición en {days} días.',
 
+	med_alert_title: 'Medicamentos próximos',
+	med_alert_msg: '{name} a las {time}',
+	med_alert_now: '¡ahora!',
+
 	// Medicines
 	med_title: 'Medicamentos',
 	med_empty: 'Ningún medicamento configurado',
