@@ -100,7 +100,7 @@ function saveData(data: TrackerData): void {
 }
 
 function createTracker() {
-	let data = $state<TrackerData>(loadData());
+	const data = $state<TrackerData>(loadData());
 
 	const todayString = toDateString(new Date());
 
@@ -144,16 +144,13 @@ function createTracker() {
 	});
 
 	const recentHistory = $derived((): DayLog[] => {
+		const todayMs = new Date(todayString).getTime();
+		const msPerDay = 1000 * 60 * 60 * 24;
 		const days: DayLog[] = [];
 		for (let i = 1; i <= 30; i++) {
-			const d = new Date(todayString);
-			d.setDate(d.getDate() - i);
-			const dateStr = toDateString(d);
-			if (data.logs[dateStr]) {
-				days.push(data.logs[dateStr]);
-			} else {
-				days.push({ date: dateStr, waterMl: 0, isBowelMovementRecorded: false });
-			}
+			const dateStr = toDateString(new Date(todayMs - i * msPerDay));
+			const log = data.logs[dateStr];
+			days.push(log ?? { date: dateStr, waterMl: 0, isBowelMovementRecorded: false });
 		}
 		return days;
 	});

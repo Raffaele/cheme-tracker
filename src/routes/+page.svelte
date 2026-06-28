@@ -15,9 +15,8 @@
 	let newAppointment = $state({ date: '', time: '', title: '', notes: '' });
 	let cycleStartInput = $state('');
 
-	const today = new Date();
 	const todayFormatted = $derived(
-		today.toLocaleDateString(i18n.locale, {
+		new Date().toLocaleDateString(i18n.locale, {
 			weekday: 'long',
 			day: 'numeric',
 			month: 'long'
