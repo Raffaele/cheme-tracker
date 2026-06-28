@@ -33,6 +33,14 @@
 - **Meaningful Names:** Use clear, intention-revealing, and pronounceable names for variables, functions, components, and types (e.g., `isBowelMovementRecorded` instead of `bmToggle`).
 - **Keep it Simple (KISS):** Write simple, readable code over clever or overly complex solutions. Avoid deeply nested conditionals; use guard clauses where applicable.
 
+## Internationalisation (I18N)
+
+- The project must support multiple languages via an I18N solution (e.g., `svelte-i18n` or a custom lightweight store).
+- All user-facing strings must be externalised into locale files — no hardcoded Italian or English text in components.
+- Italian (`it`) is the default locale. English (`en`) must be supported as a second locale at minimum.
+- Locale files must be placed in `src/lib/locales/` (e.g., `it.json`, `en.json`).
+- The active locale must be persisted in `localStorage` so the user's choice survives a page reload.
+
 ## Developer & AI Agent Guidelines
 
 - When writing components, strictly use the new **Svelte 5 Runes syntax** (`$state`, `$derived`, etc.).

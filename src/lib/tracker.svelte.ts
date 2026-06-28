@@ -7,52 +7,43 @@ import type {
 	WaterButton,
 	WaterButtonId
 } from './types.js';
+import { i18n } from './i18n.svelte.js';
 
 const STORAGE_KEY = 'chemo-tracker-data';
 const DEFAULT_WATER_GOAL_ML = 2000;
 const CYCLE_DAYS = 28;
 
-const PHASE_INFO: Record<CyclePhase, PhaseInfo> = {
-	1: {
-		phase: 1,
-		label: 'Fase 1',
-		description: 'Recupero',
-		colorClass: 'text-rose-600',
-		bgClass: 'bg-rose-50 border-rose-200',
-		days: [1, 4]
-	},
-	2: {
-		phase: 2,
-		label: 'Fase 2',
-		description: 'Stabilizzazione',
-		colorClass: 'text-amber-600',
-		bgClass: 'bg-amber-50 border-amber-200',
-		days: [5, 10]
-	},
-	3: {
-		phase: 3,
-		label: 'Fase 3',
-		description: 'Energia in crescita',
-		colorClass: 'text-emerald-600',
-		bgClass: 'bg-emerald-50 border-emerald-200',
-		days: [11, 17]
-	},
-	4: {
-		phase: 4,
-		label: 'Fase 4',
-		description: 'Pre-trattamento',
-		colorClass: 'text-blue-600',
-		bgClass: 'bg-blue-50 border-blue-200',
-		days: [18, 28]
-	}
+const PHASE_STYLE: Record<CyclePhase, Pick<PhaseInfo, 'phase' | 'colorClass' | 'bgClass' | 'days'>> = {
+	1: { phase: 1, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', days: [1, 4] },
+	2: { phase: 2, colorClass: 'text-amber-600', bgClass: 'bg-amber-50 border-amber-200', days: [5, 10] },
+	3: { phase: 3, colorClass: 'text-emerald-600', bgClass: 'bg-emerald-50 border-emerald-200', days: [11, 17] },
+	4: { phase: 4, colorClass: 'text-blue-600', bgClass: 'bg-blue-50 border-blue-200', days: [18, 28] }
 };
 
-export const ALL_WATER_BUTTONS: WaterButton[] = [
-	{ id: 'glass', label: 'Bicchiere', shortLabel: '250 ml', ml: 250, emoji: '🥛' },
-	{ id: 'half_liter', label: 'Mezzo litro', shortLabel: '500 ml', ml: 500, emoji: '🍶' },
-	{ id: 'liter', label: 'Litro', shortLabel: '1 L', ml: 1000, emoji: '🫙' },
-	{ id: 'gallon', label: 'Gallone', shortLabel: '3.785 L', ml: 3785, emoji: '🪣' }
+function getPhaseInfo(phase: CyclePhase): PhaseInfo {
+	const { t } = i18n;
+	return {
+		...PHASE_STYLE[phase],
+		label: t(`phase_${phase}_label` as Parameters<typeof t>[0]),
+		description: t(`phase_${phase}_desc` as Parameters<typeof t>[0])
+	};
+}
+
+const WATER_BUTTON_BASE: Array<Pick<WaterButton, 'id' | 'ml' | 'emoji'>> = [
+	{ id: 'glass', ml: 250, emoji: '🥛' },
+	{ id: 'half_liter', ml: 500, emoji: '🍶' },
+	{ id: 'liter', ml: 1000, emoji: '🫙' },
+	{ id: 'gallon', ml: 3785, emoji: '🪣' }
 ];
+
+function getAllWaterButtons(): WaterButton[] {
+	const { t } = i18n;
+	return WATER_BUTTON_BASE.map((b) => ({
+		...b,
+		label: t(`btn_${b.id}_label` as Parameters<typeof t>[0]),
+		shortLabel: t(`btn_${b.id}_short` as Parameters<typeof t>[0])
+	}));
+}
 
 const DEFAULT_WATER_BUTTONS: WaterButtonId[] = ['glass'];
 
@@ -126,7 +117,7 @@ function createTracker() {
 	const currentPhase = $derived((): PhaseInfo | null => {
 		const day = cycleDay();
 		if (!day) return null;
-		return PHASE_INFO[getPhaseForDay(day)];
+		return getPhaseInfo(getPhaseForDay(day));
 	});
 
 	const cycleProgress = $derived((): number => {
@@ -167,8 +158,10 @@ function createTracker() {
 		return days;
 	});
 
+	const allWaterButtons = $derived((): WaterButton[] => getAllWaterButtons());
+
 	const activeWaterButtonDefs = $derived((): WaterButton[] => {
-		return ALL_WATER_BUTTONS.filter((b) => data.activeWaterButtons.includes(b.id));
+		return allWaterButtons().filter((b) => data.activeWaterButtons.includes(b.id));
 	});
 
 	function setCycleStartDate(dateString: string): void {
@@ -212,7 +205,7 @@ function createTracker() {
 			data.activeWaterButtons = active.filter((b) => b !== id);
 		} else {
 			// preserve display order from ALL_WATER_BUTTONS
-			data.activeWaterButtons = ALL_WATER_BUTTONS.map((b) => b.id).filter(
+			data.activeWaterButtons = WATER_BUTTON_BASE.map((b) => b.id).filter(
 				(b) => active.includes(b) || b === id
 			);
 		}
@@ -264,9 +257,13 @@ function createTracker() {
 		get cycleDays() {
 			return CYCLE_DAYS;
 		},
-		get phaseInfo() {
-			return PHASE_INFO;
+		get allWaterButtons() {
+			return allWaterButtons();
 		},
+		get phaseInfo() {
+			return PHASE_STYLE;
+		},
+		getPhaseInfo,
 		setCycleStartDate,
 		updateWater,
 		setWaterGoal,
