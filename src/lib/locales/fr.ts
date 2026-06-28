@@ -100,6 +100,9 @@ export default {
 	med_day_6: 'Dim',
 
 	install_btn: 'Installer l\'application',
+	install_hint: 'Installez l\'application sur cet appareil pour l\'utiliser hors ligne',
 	qr_title: 'Partager ou installer',
-	qr_description: 'Scannez avec un autre appareil pour ouvrir l\'application'
+	qr_description: 'Scannez avec un autre appareil pour ouvrir l\'application',
+	tab_summary: 'Résumé',
+	tab_share: 'Partager'
 } as const;

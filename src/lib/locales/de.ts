@@ -100,6 +100,9 @@ export default {
 	med_day_6: 'So',
 
 	install_btn: 'App installieren',
+	install_hint: 'App auf diesem Gerät installieren, um sie offline zu nutzen',
 	qr_title: 'Teilen oder installieren',
-	qr_description: 'Mit einem anderen Gerät scannen, um die App zu öffnen'
+	qr_description: 'Mit einem anderen Gerät scannen, um die App zu öffnen',
+	tab_summary: 'Übersicht',
+	tab_share: 'Teilen'
 } as const;

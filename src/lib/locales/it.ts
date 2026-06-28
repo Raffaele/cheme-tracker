@@ -111,6 +111,9 @@ export default {
 	med_day_6: 'Dom',
 
 	install_btn: 'Installa app',
+	install_hint: 'Installa l\'app sul dispositivo per usarla offline',
 	qr_title: 'Condividi o installa',
-	qr_description: 'Scansiona con un altro dispositivo per aprire l\'app'
+	qr_description: 'Scansiona con un altro dispositivo per aprire l\'app',
+	tab_summary: 'Sintesi',
+	tab_share: 'Condivisione'
 } as const;

@@ -170,6 +170,9 @@
 		return () => window.removeEventListener('beforeinstallprompt', handler);
 	});
 
+	// Active tab
+	let activeTab = $state<'summary' | 'share'>('summary');
+
 	// Sync html[lang] to active locale
 	$effect(() => {
 		document.documentElement.lang = i18n.locale;
@@ -185,7 +188,7 @@
 	const qrSvg = $derived(browser ? renderSVG(window.location.href) : '');
 </script>
 
-<div class="min-h-screen bg-slate-50 pb-10">
+<div class="min-h-screen bg-slate-50 pb-24">
 	<!-- Header -->
 	<header class="sticky top-0 z-10 bg-white border-b border-slate-200 px-4 py-5 shadow-sm">
 		<div class="max-w-lg mx-auto flex items-start justify-between gap-4">
@@ -193,19 +196,8 @@
 				<p class="text-xs font-medium uppercase tracking-widest text-slate-600">{i18n.t('app_name')}</p>
 				<h1 class="mt-0.5 text-lg font-semibold capitalize text-slate-900">{todayFormatted}</h1>
 			</div>
-			<!-- Install button + Language switcher -->
+			<!-- Language switcher -->
 			<div class="flex flex-col items-end gap-2 pt-1">
-				{#if installPrompt && !installed}
-					<button
-						onclick={installApp}
-						class="flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white shadow-sm hover:bg-blue-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
-					>
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-							<path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-						</svg>
-						{i18n.t('install_btn')}
-					</button>
-				{/if}
 				<div class="flex items-center gap-1" role="group" aria-label="Language">
 					{#each locales as code (code)}
 						<button
@@ -225,6 +217,7 @@
 	</header>
 
 	<main class="mx-auto max-w-lg space-y-4 px-4 pt-5">
+	{#if activeTab === 'summary'}
 		<!-- Medicine alert -->
 		{#if medicineAlerts.length > 0}
 			<div role="alert" class="rounded-2xl border border-violet-200 bg-violet-50 p-4 flex items-start gap-3">
@@ -903,7 +896,8 @@
 			</div>
 		{/if}
 
-		<!-- QR code -->
+	{:else}
+		<!-- Tab: Condivisione -->
 		{#if qrSvg}
 			<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
 				<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-600">
@@ -918,5 +912,57 @@
 				<p class="mt-3 text-center text-[11px] text-slate-600 break-all">{typeof window !== 'undefined' ? window.location.href : ''}</p>
 			</div>
 		{/if}
+
+		{#if installPrompt && !installed}
+			<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+				<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-600">
+					{i18n.t('install_btn')}
+				</h2>
+				<p class="mt-1 text-xs text-slate-600">{i18n.t('install_hint')}</p>
+				<button
+					onclick={installApp}
+					class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+						<path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+					</svg>
+					{i18n.t('install_btn')}
+				</button>
+			</div>
+		{/if}
+	{/if}
 	</main>
+
+	<!-- Sticky footer tab bar -->
+	<nav
+		class="fixed bottom-0 left-0 right-0 z-20 flex border-t border-slate-200 bg-white shadow-[0_-1px_8px_0_rgba(0,0,0,0.06)]"
+		aria-label="Sezioni"
+	>
+		<button
+			onclick={() => (activeTab = 'summary')}
+			aria-current={activeTab === 'summary' ? 'page' : undefined}
+			class="flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset min-h-[56px] {activeTab === 'summary' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-700'}"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+				<path d="M2 4a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zM2 8a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1zM2 12a1 1 0 011-1h8a1 1 0 110 2H3a1 1 0 01-1-1z" />
+			</svg>
+			{i18n.t('tab_summary')}
+			{#if activeTab === 'summary'}
+				<span class="absolute bottom-0 left-1/2 h-0.5 w-12 -translate-x-1/2 rounded-full bg-blue-600"></span>
+			{/if}
+		</button>
+		<button
+			onclick={() => (activeTab = 'share')}
+			aria-current={activeTab === 'share' ? 'page' : undefined}
+			class="relative flex flex-1 flex-col items-center gap-1 py-3 text-xs font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset min-h-[56px] {activeTab === 'share' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-700'}"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+				<path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+			</svg>
+			{i18n.t('tab_share')}
+			{#if activeTab === 'share'}
+				<span class="absolute bottom-0 left-1/2 h-0.5 w-12 -translate-x-1/2 rounded-full bg-blue-600"></span>
+			{/if}
+		</button>
+	</nav>
 </div>

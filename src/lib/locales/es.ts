@@ -100,6 +100,9 @@ export default {
 	med_day_6: 'Dom',
 
 	install_btn: 'Instalar aplicación',
+	install_hint: 'Instala la aplicación en este dispositivo para usarla sin conexión',
 	qr_title: 'Compartir o instalar',
-	qr_description: 'Escanea con otro dispositivo para abrir la aplicación'
+	qr_description: 'Escanea con otro dispositivo para abrir la aplicación',
+	tab_summary: 'Resumen',
+	tab_share: 'Compartir'
 } as const;

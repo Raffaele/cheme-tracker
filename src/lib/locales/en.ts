@@ -100,6 +100,9 @@ export default {
 	med_day_6: 'Sun',
 
 	install_btn: 'Install app',
+	install_hint: 'Install the app on this device to use it offline',
 	qr_title: 'Share or install',
-	qr_description: 'Scan with another device to open the app'
+	qr_description: 'Scan with another device to open the app',
+	tab_summary: 'Summary',
+	tab_share: 'Share'
 } as const;
