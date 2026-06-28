@@ -88,7 +88,7 @@
 
 <div class="min-h-screen bg-slate-50 pb-10">
 	<!-- Header -->
-	<header class="bg-white border-b border-slate-100 px-4 py-5 shadow-sm">
+	<header class="sticky top-0 z-10 bg-white border-b border-slate-100 px-4 py-5 shadow-sm">
 		<div class="max-w-lg mx-auto flex items-start justify-between gap-4">
 			<div>
 				<p class="text-xs font-medium uppercase tracking-widest text-slate-400">{i18n.t('app_name')}</p>
