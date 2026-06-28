@@ -41,6 +41,23 @@
 - Locale files must be placed in `src/lib/locales/` (e.g., `it.json`, `en.json`).
 - The active locale must be persisted in `localStorage` so the user's choice survives a page reload.
 
+## Accessibility (A11Y) — WCAG 2.2 Level AAA
+
+The app must conform to **WCAG 2.2 Level AAA** throughout. Key requirements:
+
+- **Semantic HTML:** Use correct landmark elements (`<header>`, `<main>`, `<nav>`, `<section>`, `<article>`) and heading hierarchy (`h1` → `h2` → `h3`).
+- **Keyboard navigation:** Every interactive element must be reachable and operable via keyboard alone. Focus order must be logical and visible.
+- **Focus indicators:** Never suppress the default focus ring. Use `focus-visible` with sufficient contrast (at least 3:1 against adjacent colors).
+- **Colour contrast:** Minimum 7:1 contrast ratio for normal text and 4.5:1 for large text (AAA thresholds). Do not convey information by colour alone.
+- **ARIA labels:** Every icon-only button must have an `aria-label`. Use `aria-live="polite"` for dynamic content updates (e.g., water total, alerts).
+- **Form inputs:** Every `<input>` must have an associated `<label>` (or `aria-label`). Use `aria-required`, `aria-invalid`, and `aria-describedby` where applicable.
+- **Toggle controls:** Toggles (e.g., bowel movement) must use `role="switch"` with `aria-checked`.
+- **Images and icons:** Decorative icons use `aria-hidden="true"`. Meaningful icons include descriptive `alt` or `aria-label`.
+- **Motion:** Wrap animations/transitions in `@media (prefers-reduced-motion: reduce)` and disable or reduce them accordingly.
+- **Target size:** Interactive targets must be at least 44×44 px (AAA requirement).
+- **Language:** The `<html lang="...">` attribute must reflect the active locale at all times.
+- **Error identification:** Form validation errors must be described in text (not only by colour or icon), associated with the relevant field via `aria-describedby`.
+
 ## Developer & AI Agent Guidelines
 
 - When writing components, strictly use the new **Svelte 5 Runes syntax** (`$state`, `$derived`, etc.).
