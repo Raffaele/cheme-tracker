@@ -102,7 +102,7 @@ function createTracker() {
 		const start = new Date(data.cycleStartDate);
 		const today = new Date(todayString);
 		const diffMs = today.getTime() - start.getTime();
-		const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+		const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 		if (diffDays < 1 || diffDays > CYCLE_DAYS) return null;
 		return diffDays;
 	});
