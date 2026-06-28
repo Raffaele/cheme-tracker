@@ -74,6 +74,10 @@ export default {
 	med_alert_title: 'Medikamente fällig',
 	med_alert_msg: '{name} um {time}',
 	med_alert_now: 'jetzt!',
+	med_take_now: 'Jetzt genommen',
+	med_take_custom: 'Uhrzeit eingeben',
+	med_take_confirm: 'Bestätigen',
+	med_last_taken: 'Zuletzt genommen',
 
 	// Medicines
 	med_title: 'Medikamente',

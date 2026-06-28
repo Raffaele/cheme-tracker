@@ -16,15 +16,40 @@
 		return () => clearInterval(id);
 	});
 
-	// Medicine alerts: due within the next 30 minutes
+	// Medicine alert: custom time input open per alert entry (key = medId + scheduledTime)
+	let customTimeOpen = $state<Record<string, string>>({});
+
+	function openCustomTime(key: string, scheduledTime: string) {
+		customTimeOpen = { ...customTimeOpen, [key]: scheduledTime };
+	}
+
+	function confirmCustomTime(medId: string, scheduledTime: string, key: string) {
+		const takenAt = customTimeOpen[key];
+		if (takenAt) tracker.takeMedicine(medId, scheduledTime, takenAt);
+		const copy = { ...customTimeOpen };
+		delete copy[key];
+		customTimeOpen = copy;
+	}
+
+	function nowHHMM(): string {
+		const d = new Date();
+		return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+	}
+
+	// Medicine alerts: due within next 30 min OR overdue within last 2h and not yet taken today
 	const medicineAlerts = $derived(
 		tracker.todaysMedicines.flatMap((med) =>
 			med.times
 				.map((t) => {
 					const [h, m] = t.split(':').map(Number);
-					return { med, time: t, diffMin: h * 60 + m - nowMinutes };
+					const diffMin = h * 60 + m - nowMinutes;
+					const takenEntry = med.takenLog?.[t];
+					const takenToday = takenEntry?.date === new Date().toISOString().split('T')[0];
+					return { med, time: t, diffMin, takenToday };
 				})
-				.filter(({ diffMin }) => diffMin >= 0 && diffMin <= 30)
+				.filter(({ diffMin, takenToday }) =>
+					!takenToday && diffMin >= -120 && diffMin <= 30
+				)
 		)
 	);
 
@@ -204,16 +229,50 @@
 		{#if medicineAlerts.length > 0}
 			<div role="alert" class="rounded-2xl border border-violet-200 bg-violet-50 p-4 flex items-start gap-3">
 				<span aria-hidden="true" class="text-xl shrink-0">💊</span>
-				<div class="min-w-0">
+				<div class="min-w-0 w-full">
 					<p class="text-sm font-semibold text-violet-800">{i18n.t('med_alert_title')}</p>
-					<ul class="mt-1 space-y-0.5">
+					<ul class="mt-2 space-y-3">
 						{#each medicineAlerts as { med, time, diffMin } (med.id + time)}
-							<li class="text-sm text-violet-700">
-								{i18n.t('med_alert_msg').replace('{name}', med.name).replace('{time}', time)}
-								{#if diffMin === 0}
-									<span class="font-semibold"> — {i18n.t('med_alert_now')}</span>
+							{@const alertKey = med.id + time}
+							<li>
+								<p class="text-sm text-violet-700">
+									{i18n.t('med_alert_msg').replace('{name}', med.name).replace('{time}', time)}
+									{#if diffMin === 0}
+										<span class="font-semibold"> — {i18n.t('med_alert_now')}</span>
+									{:else}
+										<span class="opacity-75"> ({diffMin} min)</span>
+									{/if}
+								</p>
+								{#if customTimeOpen[alertKey] !== undefined}
+									<div class="mt-2 flex items-center gap-2">
+										<input
+											type="time"
+											value={customTimeOpen[alertKey]}
+											oninput={(e) => { customTimeOpen = { ...customTimeOpen, [alertKey]: (e.target as HTMLInputElement).value }; }}
+											class="rounded-lg border border-violet-300 bg-white px-3 py-1.5 text-sm text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+										/>
+										<button
+											onclick={() => confirmCustomTime(med.id, time, alertKey)}
+											class="rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-violet-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 min-h-[44px]"
+										>
+											{i18n.t('med_take_confirm')}
+										</button>
+									</div>
 								{:else}
-									<span class="opacity-75"> ({diffMin} min)</span>
+									<div class="mt-2 flex gap-2">
+										<button
+											onclick={() => tracker.takeMedicine(med.id, time, nowHHMM())}
+											class="rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-violet-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 min-h-[44px]"
+										>
+											{i18n.t('med_take_now')}
+										</button>
+										<button
+											onclick={() => openCustomTime(alertKey, time)}
+											class="rounded-lg border border-violet-300 bg-white px-3 py-1.5 text-xs font-medium text-violet-700 hover:bg-violet-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 min-h-[44px]"
+										>
+											{i18n.t('med_take_custom')}
+										</button>
+									</div>
 								{/if}
 							</li>
 						{/each}
@@ -773,6 +832,14 @@
 										<span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">{time}</span>
 									{/each}
 								</div>
+								{#if med.takenLog}
+									{@const entries = Object.entries(med.takenLog).sort((a, b) => a[0].localeCompare(b[0]))}
+									{#each entries as [scheduled, record] (scheduled)}
+										<p class="mt-0.5 text-xs text-slate-500">
+											{i18n.t('med_last_taken')} ({scheduled}): {record.date} {record.takenAt}
+										</p>
+									{/each}
+								{/if}
 							</div>
 							<button
 								onclick={() => tracker.removeMedicine(med.id)}

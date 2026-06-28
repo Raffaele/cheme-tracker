@@ -34,6 +34,8 @@ export interface Medicine {
 	name: string;
 	days: 'everyday' | number[];
 	times: string[]; // HH:MM
+	// key = scheduled HH:MM → { date: YYYY-MM-DD, takenAt: HH:MM }
+	takenLog?: Record<string, { date: string; takenAt: string }>;
 }
 
 export interface TrackerData {

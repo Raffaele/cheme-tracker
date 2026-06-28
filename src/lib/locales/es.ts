@@ -74,6 +74,10 @@ export default {
 	med_alert_title: 'Medicamentos próximos',
 	med_alert_msg: '{name} a las {time}',
 	med_alert_now: '¡ahora!',
+	med_take_now: 'Tomado ahora',
+	med_take_custom: 'Introducir hora',
+	med_take_confirm: 'Confirmar',
+	med_last_taken: 'Última toma',
 
 	// Medicines
 	med_title: 'Medicamentos',

@@ -249,6 +249,15 @@ function createTracker() {
 		);
 	});
 
+	function takeMedicine(id: string, scheduledTime: string, takenAt: string): void {
+		data.medicines = data.medicines.map((m) =>
+			m.id === id
+				? { ...m, takenLog: { ...m.takenLog, [scheduledTime]: { date: todayString, takenAt } } }
+				: m
+		);
+		saveData(data);
+	}
+
 	function addMedicine(medicine: Omit<Medicine, 'id'>): void {
 		data.medicines = [...data.medicines, { ...medicine, id: crypto.randomUUID() }];
 		saveData(data);
@@ -325,7 +334,8 @@ function createTracker() {
 			return todaysMedicines();
 		},
 		addMedicine,
-		removeMedicine
+		removeMedicine,
+		takeMedicine
 	};
 }
 
