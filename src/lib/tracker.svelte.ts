@@ -57,7 +57,10 @@ function getPhaseForDay(cycleDay: number): CyclePhase {
 }
 
 function toDateString(date: Date): string {
-	return date.toISOString().split('T')[0];
+	const y = date.getFullYear();
+	const m = String(date.getMonth() + 1).padStart(2, '0');
+	const d = String(date.getDate()).padStart(2, '0');
+	return `${y}-${m}-${d}`;
 }
 
 function loadData(): TrackerData {
@@ -218,7 +221,7 @@ function createTracker() {
 
 	function addFood(name: string, daysUntilExpiry: number): void {
 		const todayMs = new Date(todayString).getTime();
-		const consumeBy = toDateString(new Date(todayMs + daysUntilExpiry * 1000 * 60 * 60 * 24));
+		const consumeBy = toDateString(new Date(todayMs + (daysUntilExpiry - 1) * 1000 * 60 * 60 * 24));
 		data.foods = [...data.foods, { id: crypto.randomUUID(), name, consumeBy }];
 		saveData(data);
 	}

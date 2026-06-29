@@ -101,6 +101,10 @@ export default {
 
 	install_btn: 'App installieren',
 	install_hint: 'App auf diesem Gerät installieren, um sie offline zu nutzen',
+	install_android: 'Android Chrome: Menü ⋮ → „Zum Startbildschirm hinzufügen"',
+	install_ios: 'iPhone/iPad: Teilen → „Zum Home-Bildschirm"',
+	copy_url: 'Link kopieren',
+	copy_url_done: 'Link kopiert!',
 	qr_title: 'Teilen oder installieren',
 	qr_description: 'Mit einem anderen Gerät scannen, um die App zu öffnen',
 	tab_summary: 'Übersicht',

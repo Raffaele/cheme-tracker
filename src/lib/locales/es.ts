@@ -101,6 +101,10 @@ export default {
 
 	install_btn: 'Instalar aplicación',
 	install_hint: 'Instala la aplicación en este dispositivo para usarla sin conexión',
+	install_android: 'Android Chrome: menú ⋮ → "Añadir a pantalla de inicio"',
+	install_ios: 'iPhone/iPad: Compartir → "Añadir a pantalla de inicio"',
+	copy_url: 'Copiar enlace',
+	copy_url_done: '¡Enlace copiado!',
 	qr_title: 'Compartir o instalar',
 	qr_description: 'Escanea con otro dispositivo para abrir la aplicación',
 	tab_summary: 'Resumen',

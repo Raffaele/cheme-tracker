@@ -139,7 +139,7 @@
 			<p class="text-sm font-semibold text-amber-800">{i18n.t('food_alert_title')}</p>
 			<ul class="mt-1 space-y-0.5">
 				{#each tracker.foodsDueToday as food (food.id)}
-					{@const isExpired = food.consumeBy < new Date().toISOString().split('T')[0]}
+					{@const isExpired = food.consumeBy < (() => { const n = new Date(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`; })()}
 					<li class="text-sm {isExpired ? 'line-through text-amber-500' : 'text-amber-700'}">· {food.name}</li>
 				{/each}
 			</ul>

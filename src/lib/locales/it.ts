@@ -112,6 +112,10 @@ export default {
 
 	install_btn: 'Installa app',
 	install_hint: 'Installa l\'app sul dispositivo per usarla offline',
+	install_android: 'Su Android Chrome: menu ⋮ → "Aggiungi a schermata Home"',
+	install_ios: 'Su iPhone/iPad: tasto Condividi → "Aggiungi a schermata Home"',
+	copy_url: 'Copia link',
+	copy_url_done: 'Link copiato!',
 	qr_title: 'Condividi o installa',
 	qr_description: 'Scansiona con un altro dispositivo per aprire l\'app',
 	tab_summary: 'Sintesi',

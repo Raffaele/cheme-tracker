@@ -101,6 +101,10 @@ export default {
 
 	install_btn: 'Installer l\'application',
 	install_hint: 'Installez l\'application sur cet appareil pour l\'utiliser hors ligne',
+	install_android: 'Android Chrome : menu ⋮ → « Ajouter à l\'écran d\'accueil »',
+	install_ios: 'iPhone/iPad : Partager → « Sur l\'écran d\'accueil »',
+	copy_url: 'Copier le lien',
+	copy_url_done: 'Lien copié !',
 	qr_title: 'Partager ou installer',
 	qr_description: 'Scannez avec un autre appareil pour ouvrir l\'application',
 	tab_summary: 'Résumé',

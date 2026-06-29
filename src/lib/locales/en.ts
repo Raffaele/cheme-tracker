@@ -101,6 +101,10 @@ export default {
 
 	install_btn: 'Install app',
 	install_hint: 'Install the app on this device to use it offline',
+	install_android: 'Android Chrome: tap menu ⋮ → "Add to Home screen"',
+	install_ios: 'iPhone/iPad: tap Share → "Add to Home Screen"',
+	copy_url: 'Copy link',
+	copy_url_done: 'Link copied!',
 	qr_title: 'Share or install',
 	qr_description: 'Scan with another device to open the app',
 	tab_summary: 'Summary',

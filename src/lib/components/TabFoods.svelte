@@ -65,7 +65,7 @@
 			<p class="text-center text-sm text-slate-600 py-4">{i18n.t('food_empty')}</p>
 		{:else}
 			{#each tracker.foods.slice().sort((a, b) => a.consumeBy.localeCompare(b.consumeBy)) as food (food.id)}
-				{@const today = new Date().toISOString().split('T')[0]}
+				{@const today = (() => { const n = new Date(); return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`; })()}
 				{@const isExpired = food.consumeBy < today}
 				{@const isDueToday = food.consumeBy === today}
 				<div class="flex items-center gap-3 rounded-xl px-3 py-2.5 {isDueToday ? 'bg-amber-50 border border-amber-200' : isExpired ? 'bg-slate-50 opacity-70' : 'bg-slate-50'}">
