@@ -12,7 +12,7 @@ export interface Appointment {
 	notes?: string;
 }
 
-export type WaterButtonId = 'glass' | 'half_liter' | 'liter' | 'gallon';
+export type WaterButtonId = 'glass' | 'half_liter' | 'liter' | 'pint';
 
 export interface WaterButton {
 	id: WaterButtonId;

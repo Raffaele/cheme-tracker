@@ -35,7 +35,7 @@ const WATER_BUTTON_BASE: Array<Pick<WaterButton, 'id' | 'ml' | 'emoji'>> = [
 	{ id: 'glass', ml: 250, emoji: '🥛' },
 	{ id: 'half_liter', ml: 500, emoji: '🍶' },
 	{ id: 'liter', ml: 1000, emoji: '🫙' },
-	{ id: 'gallon', ml: 3785, emoji: '🪣' }
+	{ id: 'pint', ml: 568, emoji: '🍺' }
 ];
 
 function getAllWaterButtons(): WaterButton[] {

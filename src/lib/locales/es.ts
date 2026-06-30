@@ -40,8 +40,8 @@ export default {
 	btn_half_liter_short: '500 ml',
 	btn_liter_label: 'Litro',
 	btn_liter_short: '1 L',
-	btn_gallon_label: 'Galón',
-	btn_gallon_short: '3,785 L',
+	btn_pint_label: 'Pinta',
+	btn_pint_short: '568 ml',
 
 	bowel_label: 'Deposición',
 	bowel_hint: 'Registra el evento del día',

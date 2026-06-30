@@ -4,7 +4,6 @@
 	import TabHistory from '$lib/components/TabHistory.svelte';
 	import TabMedicines from '$lib/components/TabMedicines.svelte';
 	import TabFoods from '$lib/components/TabFoods.svelte';
-	import TabShare from '$lib/components/TabShare.svelte';
 	import TabSettings from '$lib/components/TabSettings.svelte';
 
 	const todayFormatted = $derived(
@@ -15,7 +14,7 @@
 		})
 	);
 
-	type Tab = 'summary' | 'history' | 'medicines' | 'foods' | 'share' | 'settings';
+	type Tab = 'summary' | 'history' | 'medicines' | 'foods' | 'settings';
 	let activeTab = $state<Tab>('summary');
 
 	$effect(() => {
@@ -44,11 +43,6 @@
 			icon: 'M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h5a1 1 0 000-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM13 16a1 1 0 102 0v-5.586l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 101.414 1.414L13 10.414V16z'
 		},
 		{
-			id: 'share',
-			labelKey: 'tab_share',
-			icon: 'M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z'
-		},
-		{
 			id: 'settings',
 			labelKey: 'tab_settings',
 			icon: 'M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z'
@@ -74,8 +68,6 @@
 			<TabMedicines />
 		{:else if activeTab === 'foods'}
 			<TabFoods />
-		{:else if activeTab === 'share'}
-			<TabShare />
 		{:else if activeTab === 'settings'}
 			<TabSettings />
 		{/if}
