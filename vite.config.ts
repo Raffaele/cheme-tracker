@@ -11,7 +11,7 @@ export default defineConfig({
 		sveltekit(),
 		VitePWA({
 			registerType: 'autoUpdate',
-			base,
+			injectRegister: null,
 			workbox: {
 				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}']
 			},

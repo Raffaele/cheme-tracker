@@ -8,7 +8,7 @@
 		<link rel="manifest" href="%sveltekit.assets%/manifest.webmanifest" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="theme-color" content="#1e40af" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 		<meta name="apple-mobile-web-app-title" content="Chemo Tracker" />
 		<meta name="description" content="Traccia il tuo ciclo di chemioterapia, acqua e appuntamenti" />
@@ -16,6 +16,14 @@
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<script>
+			// Service worker registration
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('%sveltekit.assets%/sw.js', { scope: '%sveltekit.assets%/' });
+				});
+			}
+
+			// PWA install prompt
 			window.__installPrompt = null;
 			window.addEventListener('beforeinstallprompt', function(e) {
 				e.preventDefault();
