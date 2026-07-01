@@ -6,6 +6,12 @@
       "runtimeExecutable": "yarn",
       "runtimeArgs": ["dev", "--port", "5173"],
       "port": 5173
+    },
+    {
+      "name": "chemo-tracker-preview",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "NODE_ENV=production yarn preview --port 4173"],
+      "port": 4173
     }
   ]
 }

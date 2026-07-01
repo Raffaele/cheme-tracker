@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa';
+import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 
 const base = process.env.NODE_ENV === 'production' ? '/cheme-tracker' : '';
 
@@ -9,11 +9,11 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		sveltekit(),
-		VitePWA({
+		SvelteKitPWA({
 			registerType: 'autoUpdate',
 			injectRegister: null,
-			workbox: {
-				globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}']
+			kit: {
+				base: `${base}/`
 			},
 			manifest: {
 				name: 'Chemo Tracker',
