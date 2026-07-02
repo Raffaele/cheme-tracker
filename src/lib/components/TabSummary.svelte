@@ -51,6 +51,8 @@
 	let showAppointmentForm = $state(false);
 	let newAppointment = $state({ date: '', time: '', title: '', notes: '' });
 	let cycleStartInput = $state('');
+	let showManualRestart = $state(false);
+	let cycleRestartInput = $state('');
 
 	const waterCups = $derived(Math.floor(tracker.todayLog.waterMl / 250));
 	const waterPercent = $derived(
@@ -64,6 +66,14 @@
 
 	function submitCycleStart() {
 		if (cycleStartInput) tracker.setCycleStartDate(cycleStartInput);
+	}
+
+	function submitManualRestart() {
+		if (cycleRestartInput) {
+			tracker.setCycleStartDate(cycleRestartInput);
+			cycleRestartInput = '';
+			showManualRestart = false;
+		}
 	}
 
 	function submitAppointment() {
@@ -182,6 +192,53 @@
 				{i18n.t('setup_start')}
 			</button>
 		</div>
+	</div>
+{:else if tracker.isCycleFinished}
+	<!-- Cycle finished card -->
+	<div class="rounded-2xl bg-white p-6 shadow-sm border border-blue-200" role="alert">
+		<div class="flex items-start gap-3">
+			<span aria-hidden="true" class="text-xl shrink-0">🔁</span>
+			<div>
+				<h2 class="text-base font-semibold text-slate-900">{i18n.t('cycle_finished_title')}</h2>
+				<p class="mt-1 text-sm text-slate-600">{i18n.t('cycle_finished_desc')}</p>
+			</div>
+		</div>
+
+		<div class="mt-4 flex flex-col gap-3 sm:flex-row">
+			<button
+				onclick={() => tracker.restartCycleAtDay28()}
+				class="flex-1 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
+			>
+				{i18n.t('cycle_restart_day28')}
+			</button>
+			<button
+				onclick={() => (showManualRestart = !showManualRestart)}
+				aria-expanded={showManualRestart}
+				class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
+			>
+				{i18n.t('cycle_restart_manual')}
+			</button>
+		</div>
+
+		{#if showManualRestart}
+			<div class="mt-4 flex gap-3">
+				<div class="flex-1">
+					<label for="cycle-restart-date" class="sr-only">{i18n.t('cycle_restart_manual')}</label>
+					<input
+						id="cycle-restart-date"
+						type="date"
+						bind:value={cycleRestartInput}
+						class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+					/>
+				</div>
+				<button
+					onclick={submitManualRestart}
+					class="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
+				>
+					{i18n.t('cycle_restart_confirm')}
+				</button>
+			</div>
+		{/if}
 	</div>
 {:else}
 	<!-- Cycle Status Card -->

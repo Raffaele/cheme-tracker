@@ -100,14 +100,23 @@ function createTracker() {
 
 	const todayString = toDateString(new Date());
 
-	const cycleDay = $derived((): number | null => {
+	const cycleDaysElapsed = $derived((): number | null => {
 		if (!data.cycleStartDate) return null;
 		const start = new Date(data.cycleStartDate);
 		const today = new Date(todayString);
 		const diffMs = today.getTime() - start.getTime();
-		const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-		if (diffDays < 1 || diffDays > CYCLE_DAYS) return null;
+		return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+	});
+
+	const cycleDay = $derived((): number | null => {
+		const diffDays = cycleDaysElapsed();
+		if (diffDays === null || diffDays < 1 || diffDays > CYCLE_DAYS) return null;
 		return diffDays;
+	});
+
+	const isCycleFinished = $derived((): boolean => {
+		const diffDays = cycleDaysElapsed();
+		return diffDays !== null && diffDays >= CYCLE_DAYS;
 	});
 
 	const currentPhase = $derived((): PhaseInfo | null => {
@@ -174,6 +183,13 @@ function createTracker() {
 	function setCycleStartDate(dateString: string): void {
 		data.cycleStartDate = dateString;
 		saveData(data);
+	}
+
+	function restartCycleAtDay28(): void {
+		if (!data.cycleStartDate) return;
+		const start = new Date(data.cycleStartDate);
+		const newStart = new Date(start.getTime() + CYCLE_DAYS * 24 * 60 * 60 * 1000);
+		setCycleStartDate(toDateString(newStart));
 	}
 
 	function updateWater(ml: number): void {
@@ -278,6 +294,9 @@ function createTracker() {
 		get cycleDay() {
 			return cycleDay();
 		},
+		get isCycleFinished() {
+			return isCycleFinished();
+		},
 		get currentPhase() {
 			return currentPhase();
 		},
@@ -324,6 +343,7 @@ function createTracker() {
 		},
 		getPhaseInfo,
 		setCycleStartDate,
+		restartCycleAtDay28,
 		updateWater,
 		setWaterGoal,
 		toggleWaterButton,

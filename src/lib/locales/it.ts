@@ -14,16 +14,21 @@ export default {
 	cycle_start: 'Inizio',
 	cycle_end: 'Giorno 28',
 	cycle_inactive: 'Ciclo completato o non attivo',
+	cycle_finished_title: 'Ciclo completato',
+	cycle_finished_desc: 'Sono passati 28 giorni. Vuoi iniziare un nuovo ciclo?',
+	cycle_restart_day28: 'Ricomincia dal giorno 28',
+	cycle_restart_manual: 'Inserisci data manualmente',
+	cycle_restart_confirm: 'Conferma',
 
 	// Phases
 	phase_1_label: 'Fase 1',
-	phase_1_desc: 'Recupero',
+	phase_1_desc: 'Nausea',
 	phase_2_label: 'Fase 2',
-	phase_2_desc: 'Stabilizzazione',
+	phase_2_desc: 'Nadir',
 	phase_3_label: 'Fase 3',
-	phase_3_desc: 'Energia in crescita',
+	phase_3_desc: 'Ripresa',
 	phase_4_label: 'Fase 4',
-	phase_4_desc: 'Pre-trattamento',
+	phase_4_desc: 'Stabilizzazione',
 
 	// Daily log
 	daily_log_title: 'Registrazione di oggi',
