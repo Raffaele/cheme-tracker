@@ -71,6 +71,10 @@ export default {
 	food_save: 'Añadir alimento',
 	food_remove_aria: 'Eliminar alimento',
 	food_expires: 'Antes del',
+	food_remove_confirm_title: '¿Eliminar este alimento?',
+	food_remove_confirm_desc: 'Estás a punto de eliminar "{name}" de la lista. Esta acción no se puede deshacer.',
+	food_remove_confirm: 'Eliminar',
+	food_remove_cancel: 'Cancelar',
 	food_alert_title: 'Alimentos a consumir hoy',
 
 	bowel_alert_title: 'Atención',

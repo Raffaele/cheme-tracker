@@ -61,7 +61,7 @@
 
 	<main class="mx-auto max-w-lg space-y-4 px-4 pt-5">
 		{#if activeTab === 'summary'}
-			<TabSummary />
+			<TabSummary onNavigateFoods={() => (activeTab = 'foods')} />
 		{:else if activeTab === 'history'}
 			<TabHistory />
 		{:else if activeTab === 'medicines'}

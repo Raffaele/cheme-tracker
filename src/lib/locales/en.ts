@@ -71,6 +71,10 @@ export default {
 	food_save: 'Add food',
 	food_remove_aria: 'Remove food',
 	food_expires: 'By',
+	food_remove_confirm_title: 'Remove this food?',
+	food_remove_confirm_desc: 'You are about to remove "{name}" from the list. This action cannot be undone.',
+	food_remove_confirm: 'Remove',
+	food_remove_cancel: 'Cancel',
 	food_alert_title: 'Foods to consume today',
 
 	bowel_alert_title: 'Warning',

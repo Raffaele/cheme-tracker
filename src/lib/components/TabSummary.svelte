@@ -2,6 +2,8 @@
 	import { tracker } from '$lib/tracker.svelte.js';
 	import { i18n } from '$lib/i18n.svelte.js';
 
+	let { onNavigateFoods }: { onNavigateFoods?: () => void } = $props();
+
 	// Reactive clock — updates every minute for medicine alerts
 	let nowMinutes = $state(getNowMinutes());
 	function getNowMinutes(): number {
@@ -143,9 +145,14 @@
 
 <!-- Food alert -->
 {#if tracker.foodsDueToday.length > 0}
-	<div role="alert" class="rounded-2xl border border-amber-200 bg-amber-50 p-4 flex items-start gap-3">
+	<button
+		type="button"
+		onclick={() => onNavigateFoods?.()}
+		class="w-full rounded-2xl border border-amber-200 bg-amber-50 p-4 flex items-start gap-3 text-left hover:bg-amber-100 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+		aria-label="{i18n.t('food_alert_title')} — {i18n.t('tab_foods')}"
+	>
 		<span aria-hidden="true" class="text-xl shrink-0">🍽️</span>
-		<div class="min-w-0">
+		<div role="alert" class="min-w-0">
 			<p class="text-sm font-semibold text-amber-800">{i18n.t('food_alert_title')}</p>
 			<ul class="mt-1 space-y-0.5">
 				{#each tracker.foodsDueToday as food (food.id)}
@@ -154,7 +161,7 @@
 				{/each}
 			</ul>
 		</div>
-	</div>
+	</button>
 {/if}
 
 <!-- Bowel alert -->

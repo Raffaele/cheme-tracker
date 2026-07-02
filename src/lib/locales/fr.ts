@@ -71,6 +71,10 @@ export default {
 	food_save: 'Ajouter l\'aliment',
 	food_remove_aria: 'Supprimer l\'aliment',
 	food_expires: 'Avant le',
+	food_remove_confirm_title: 'Supprimer cet aliment ?',
+	food_remove_confirm_desc: 'Vous êtes sur le point de supprimer « {name} » de la liste. Cette action est irréversible.',
+	food_remove_confirm: 'Supprimer',
+	food_remove_cancel: 'Annuler',
 	food_alert_title: 'Aliments à consommer aujourd\'hui',
 
 	bowel_alert_title: 'Attention',

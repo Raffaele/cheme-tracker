@@ -71,6 +71,10 @@ export default {
 	food_save: 'Lebensmittel hinzufügen',
 	food_remove_aria: 'Lebensmittel entfernen',
 	food_expires: 'Bis zum',
+	food_remove_confirm_title: 'Dieses Lebensmittel entfernen?',
+	food_remove_confirm_desc: 'Du bist dabei, „{name}" aus der Liste zu entfernen. Diese Aktion kann nicht rückgängig gemacht werden.',
+	food_remove_confirm: 'Entfernen',
+	food_remove_cancel: 'Abbrechen',
 	food_alert_title: 'Heute zu verzehrende Lebensmittel',
 
 	bowel_alert_title: 'Achtung',

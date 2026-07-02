@@ -82,6 +82,10 @@ export default {
 	food_save: 'Aggiungi cibo',
 	food_remove_aria: 'Rimuovi cibo',
 	food_expires: 'Entro il',
+	food_remove_confirm_title: 'Rimuovere questo cibo?',
+	food_remove_confirm_desc: 'Stai per rimuovere "{name}" dall\'elenco. L\'azione non può essere annullata.',
+	food_remove_confirm: 'Rimuovi',
+	food_remove_cancel: 'Annulla',
 	food_alert_title: 'Cibi da consumare oggi',
 
 	bowel_alert_title: 'Attenzione',
