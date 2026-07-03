@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { tracker } from '$lib/tracker.svelte.js';
 	import { i18n } from '$lib/i18n.svelte.js';
+	import type { Medicine } from '$lib/types.js';
 
 	let showMedForm = $state(false);
 	let newMed = $state({ name: '', everyday: true, days: [] as number[], times: ['08:00'] });
+	let medPendingRemoval = $state<Medicine | null>(null);
+	let removalTriggerEl: HTMLElement | null = null;
+	let cancelBtnEl = $state<HTMLButtonElement | undefined>();
 
 	const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6] as const;
 
@@ -38,7 +42,41 @@
 		newMed = { name: '', everyday: true, days: [], times: ['08:00'] };
 		showMedForm = false;
 	}
+
+	function requestRemoveMedicine(med: Medicine, event: MouseEvent) {
+		removalTriggerEl = event.currentTarget as HTMLElement;
+		medPendingRemoval = med;
+	}
+
+	function closeRemoveDialog() {
+		medPendingRemoval = null;
+		removalTriggerEl?.focus();
+		removalTriggerEl = null;
+	}
+
+	function confirmRemoveMedicine() {
+		if (medPendingRemoval) {
+			tracker.removeMedicine(medPendingRemoval.id);
+		}
+		closeRemoveDialog();
+	}
+
+	function handleDialogKeydown(event: KeyboardEvent) {
+		if (!medPendingRemoval) return;
+		if (event.key === 'Escape') {
+			event.preventDefault();
+			closeRemoveDialog();
+		}
+	}
+
+	$effect(() => {
+		if (medPendingRemoval && cancelBtnEl) {
+			cancelBtnEl.focus();
+		}
+	});
 </script>
+
+<svelte:window onkeydown={handleDialogKeydown} />
 
 <div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
 	<div class="flex items-center justify-between">
@@ -169,7 +207,7 @@
 						{/if}
 					</div>
 					<button
-						onclick={() => tracker.removeMedicine(med.id)}
+						onclick={(event) => requestRemoveMedicine(med, event)}
 						class="text-slate-400 hover:text-rose-600 transition-colors motion-reduce:transition-none text-lg leading-none shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 rounded"
 						aria-label="{i18n.t('med_remove_aria')}: {med.name}"
 					>
@@ -180,3 +218,45 @@
 		{/if}
 	</div>
 </div>
+
+{#if medPendingRemoval}
+	{@const med = medPendingRemoval}
+	<div class="fixed inset-0 z-30 flex items-center justify-center bg-slate-900/50 p-4">
+		<button
+			type="button"
+			class="absolute inset-0 h-full w-full cursor-default"
+			aria-label={i18n.t('med_remove_cancel')}
+			onclick={closeRemoveDialog}
+		></button>
+		<div
+			role="alertdialog"
+			aria-modal="true"
+			aria-labelledby="med-remove-title"
+			aria-describedby="med-remove-desc"
+			tabindex="-1"
+			class="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-lg"
+		>
+			<h2 id="med-remove-title" class="text-base font-semibold text-slate-900">
+				{i18n.t('med_remove_confirm_title')}
+			</h2>
+			<p id="med-remove-desc" class="mt-1 text-sm text-slate-600">
+				{i18n.t('med_remove_confirm_desc').replace('{name}', med.name)}
+			</p>
+			<div class="mt-5 flex gap-3">
+				<button
+					bind:this={cancelBtnEl}
+					onclick={closeRemoveDialog}
+					class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
+				>
+					{i18n.t('med_remove_cancel')}
+				</button>
+				<button
+					onclick={confirmRemoveMedicine}
+					class="flex-1 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-rose-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 min-h-[44px]"
+				>
+					{i18n.t('med_remove_confirm')}
+				</button>
+			</div>
+		</div>
+	</div>
+{/if}
