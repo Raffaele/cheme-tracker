@@ -2,12 +2,12 @@
 	import { tracker } from '$lib/tracker.svelte.js';
 	import { i18n } from '$lib/i18n.svelte.js';
 	import type { FoodItem } from '$lib/types.js';
+	import ConfirmDialog from './ConfirmDialog.svelte';
 
 	let showFoodForm = $state(false);
 	let newFood = $state({ name: '', days: 1 });
 	let foodPendingRemoval = $state<FoodItem | null>(null);
 	let removalTriggerEl: HTMLElement | null = null;
-	let cancelBtnEl = $state<HTMLButtonElement | undefined>();
 
 	function submitFood() {
 		if (newFood.name.trim() && newFood.days >= 0) {
@@ -34,23 +34,7 @@
 		}
 		closeRemoveDialog();
 	}
-
-	function handleDialogKeydown(event: KeyboardEvent) {
-		if (!foodPendingRemoval) return;
-		if (event.key === 'Escape') {
-			event.preventDefault();
-			closeRemoveDialog();
-		}
-	}
-
-	$effect(() => {
-		if (foodPendingRemoval && cancelBtnEl) {
-			cancelBtnEl.focus();
-		}
-	});
 </script>
-
-<svelte:window onkeydown={handleDialogKeydown} />
 
 <div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
 	<div class="flex items-center justify-between">
@@ -131,43 +115,12 @@
 </div>
 
 {#if foodPendingRemoval}
-	{@const food = foodPendingRemoval}
-	<div class="fixed inset-0 z-30 flex items-center justify-center bg-slate-900/50 p-4">
-		<button
-			type="button"
-			class="absolute inset-0 h-full w-full cursor-default"
-			aria-label={i18n.t('food_remove_cancel')}
-			onclick={closeRemoveDialog}
-		></button>
-		<div
-			role="alertdialog"
-			aria-modal="true"
-			aria-labelledby="food-remove-title"
-			aria-describedby="food-remove-desc"
-			tabindex="-1"
-			class="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-lg"
-		>
-			<h2 id="food-remove-title" class="text-base font-semibold text-slate-900">
-				{i18n.t('food_remove_confirm_title')}
-			</h2>
-			<p id="food-remove-desc" class="mt-1 text-sm text-slate-600">
-				{i18n.t('food_remove_confirm_desc').replace('{name}', food.name)}
-			</p>
-			<div class="mt-5 flex gap-3">
-				<button
-					bind:this={cancelBtnEl}
-					onclick={closeRemoveDialog}
-					class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
-				>
-					{i18n.t('food_remove_cancel')}
-				</button>
-				<button
-					onclick={confirmRemoveFood}
-					class="flex-1 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-rose-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 min-h-[44px]"
-				>
-					{i18n.t('food_remove_confirm')}
-				</button>
-			</div>
-		</div>
-	</div>
+	<ConfirmDialog
+		title={i18n.t('food_remove_confirm_title')}
+		description={i18n.t('food_remove_confirm_desc').replace('{name}', foodPendingRemoval.name)}
+		confirmLabel={i18n.t('food_remove_confirm')}
+		cancelLabel={i18n.t('food_remove_cancel')}
+		onConfirm={confirmRemoveFood}
+		onCancel={closeRemoveDialog}
+	/>
 {/if}
