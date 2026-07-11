@@ -127,5 +127,9 @@ export default {
 	tab_share: 'Share',
 	tab_settings: 'Settings',
 	settings_language_title: 'Language',
-	settings_water_title: 'Water'
+	settings_water_title: 'Water',
+	settings_cycle_title: 'Therapy start date',
+	settings_cycle_description: 'Change the start date of the current cycle at any time.',
+	settings_cycle_save: 'Save date',
+	settings_cycle_saved: 'Date updated'
 } as const;

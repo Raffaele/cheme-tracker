@@ -127,5 +127,9 @@ export default {
 	tab_share: 'Partager',
 	tab_settings: 'Paramètres',
 	settings_language_title: 'Langue',
-	settings_water_title: 'Eau'
+	settings_water_title: 'Eau',
+	settings_cycle_title: 'Date de début du traitement',
+	settings_cycle_description: 'Modifiez à tout moment la date de début du cycle en cours.',
+	settings_cycle_save: 'Enregistrer la date',
+	settings_cycle_saved: 'Date mise à jour'
 } as const;

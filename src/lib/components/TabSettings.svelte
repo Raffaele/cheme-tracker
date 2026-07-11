@@ -29,6 +29,16 @@
 		const ml = Math.round(waterGoalInput);
 		if (ml > 0) tracker.setWaterGoal(ml);
 	}
+
+	let cycleStartInput = $state(tracker.cycleStartDate ?? '');
+	let cycleStartSaved = $state(false);
+
+	function applyCycleStart() {
+		if (!cycleStartInput) return;
+		tracker.setCycleStartDate(cycleStartInput);
+		cycleStartSaved = true;
+		setTimeout(() => { cycleStartSaved = false; }, 2000);
+	}
 </script>
 
 <!-- Lingua -->
@@ -50,6 +60,32 @@
 			</button>
 		{/each}
 	</div>
+</div>
+
+<!-- Data di inizio terapia -->
+<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+	<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-600 mb-1">
+		{i18n.t('settings_cycle_title')}
+	</h2>
+	<p class="mb-4 text-sm text-slate-700">{i18n.t('settings_cycle_description')}</p>
+	<div class="flex items-center gap-2">
+		<label for="settings-cycle-start" class="sr-only">{i18n.t('settings_cycle_title')}</label>
+		<input
+			id="settings-cycle-start"
+			type="date"
+			bind:value={cycleStartInput}
+			class="flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+		/>
+		<button
+			onclick={applyCycleStart}
+			class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
+		>
+			{i18n.t('settings_cycle_save')}
+		</button>
+	</div>
+	{#if cycleStartSaved}
+		<p class="mt-2 text-xs font-medium text-emerald-700" aria-live="polite">{i18n.t('settings_cycle_saved')}</p>
+	{/if}
 </div>
 
 <!-- Acqua -->

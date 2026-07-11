@@ -138,5 +138,9 @@ export default {
 	tab_share: 'Condivisione',
 	tab_settings: 'Impostazioni',
 	settings_language_title: 'Lingua',
-	settings_water_title: 'Acqua'
+	settings_water_title: 'Acqua',
+	settings_cycle_title: 'Data di inizio terapia',
+	settings_cycle_description: 'Modifica in qualunque momento la data di inizio del ciclo corrente.',
+	settings_cycle_save: 'Salva data',
+	settings_cycle_saved: 'Data aggiornata'
 } as const;
