@@ -207,16 +207,16 @@
 			<span aria-hidden="true" class="text-xl shrink-0">🔁</span>
 			<div>
 				<h2 class="text-base font-semibold text-slate-900">{i18n.t('cycle_finished_title')}</h2>
-				<p class="mt-1 text-sm text-slate-600">{i18n.t('cycle_finished_desc')}</p>
+				<p class="mt-1 text-sm text-slate-600">{i18n.t('cycle_finished_desc').replace('{days}', String(tracker.cycleDays))}</p>
 			</div>
 		</div>
 
 		<div class="mt-4 flex flex-col gap-3 sm:flex-row">
 			<button
-				onclick={() => tracker.restartCycleAtDay28()}
+				onclick={() => tracker.restartCycleAtCycleEnd()}
 				class="flex-1 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 min-h-[44px]"
 			>
-				{i18n.t('cycle_restart_day28')}
+				{i18n.t('cycle_restart_day28').replace('{days}', String(tracker.cycleDays))}
 			</button>
 			<button
 				onclick={() => (showManualRestart = !showManualRestart)}
@@ -276,7 +276,7 @@
 			<div class="mb-1.5 flex justify-between text-xs text-slate-600">
 				<span>{i18n.t('cycle_start')}</span>
 				<span>{tracker.cycleProgress}%</span>
-				<span>{i18n.t('cycle_end')}</span>
+				<span>{i18n.t('cycle_end').replace('{days}', String(tracker.cycleDays))}</span>
 			</div>
 			<div
 				role="progressbar"

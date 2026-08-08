@@ -9,11 +9,11 @@ export default {
 
 	cycle_day_label: 'Zyklustag',
 	cycle_start: 'Beginn',
-	cycle_end: 'Tag 28',
+	cycle_end: 'Tag {days}',
 	cycle_inactive: 'Zyklus abgeschlossen oder inaktiv',
 	cycle_finished_title: 'Zyklus abgeschlossen',
-	cycle_finished_desc: '28 Tage sind vergangen. Möchten Sie einen neuen Zyklus starten?',
-	cycle_restart_day28: 'Ab Tag 28 neu starten',
+	cycle_finished_desc: '{days} Tage sind vergangen. Möchten Sie einen neuen Zyklus starten?',
+	cycle_restart_day28: 'Ab Tag {days} neu starten',
 	cycle_restart_manual: 'Datum manuell eingeben',
 	cycle_restart_confirm: 'Bestätigen',
 
@@ -131,5 +131,8 @@ export default {
 	settings_cycle_title: 'Beginn der Therapie',
 	settings_cycle_description: 'Ändern Sie jederzeit das Startdatum des aktuellen Zyklus.',
 	settings_cycle_save: 'Datum speichern',
-	settings_cycle_saved: 'Datum aktualisiert'
+	settings_cycle_saved: 'Datum aktualisiert',
+	settings_cycle_length_title: 'Zyklusdauer',
+	settings_cycle_length_description: 'Wählen Sie, wie viele Tage der Zyklus dauert. Phase 4 erstreckt sich bis zum Ende des Zyklus.',
+	cycle_length_days_suffix: 'Tage'
 } as const;

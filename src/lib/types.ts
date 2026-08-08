@@ -38,8 +38,11 @@ export interface Medicine {
 	takenLog?: Record<string, { date: string; takenAt: string }>;
 }
 
+export type CycleLength = 28 | 56;
+
 export interface TrackerData {
 	cycleStartDate: string | null;
+	cycleLengthDays: CycleLength;
 	logs: Record<string, DayLog>;
 	appointments: Appointment[];
 	activeWaterButtons: WaterButtonId[];

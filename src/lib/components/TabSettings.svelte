@@ -39,6 +39,8 @@
 		cycleStartSaved = true;
 		setTimeout(() => { cycleStartSaved = false; }, 2000);
 	}
+
+	const cycleLengthOptions = [28, 56] as const;
 </script>
 
 <!-- Lingua -->
@@ -86,6 +88,27 @@
 	{#if cycleStartSaved}
 		<p class="mt-2 text-xs font-medium text-emerald-700" aria-live="polite">{i18n.t('settings_cycle_saved')}</p>
 	{/if}
+</div>
+
+<!-- Durata del ciclo -->
+<div class="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+	<h2 class="text-sm font-semibold uppercase tracking-widest text-slate-600 mb-1">
+		{i18n.t('settings_cycle_length_title')}
+	</h2>
+	<p class="mb-4 text-sm text-slate-700">{i18n.t('settings_cycle_length_description')}</p>
+	<div class="flex flex-wrap gap-2" role="group" aria-label={i18n.t('settings_cycle_length_title')}>
+		{#each cycleLengthOptions as length (length)}
+			<button
+				onclick={() => tracker.setCycleLength(length)}
+				aria-pressed={tracker.cycleDays === length}
+				class="flex-1 rounded-xl border px-3 py-3 text-sm font-medium transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 min-h-[44px] {tracker.cycleDays === length
+					? 'border-blue-300 bg-blue-100 text-blue-700'
+					: 'border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300 hover:bg-slate-100'}"
+			>
+				{length} {i18n.t('cycle_length_days_suffix')}
+			</button>
+		{/each}
+	</div>
 </div>
 
 <!-- Acqua -->

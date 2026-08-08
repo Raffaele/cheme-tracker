@@ -3,6 +3,7 @@ import type {
 	DayLog,
 	Appointment,
 	CyclePhase,
+	CycleLength,
 	PhaseInfo,
 	WaterButton,
 	WaterButtonId,
@@ -13,21 +14,16 @@ import { i18n } from './i18n.svelte.js';
 
 const STORAGE_KEY = 'chemo-tracker-data';
 const DEFAULT_WATER_GOAL_ML = 2000;
-const CYCLE_DAYS = 28;
+const DEFAULT_CYCLE_LENGTH: CycleLength = 28;
 
-const PHASE_STYLE: Record<CyclePhase, Pick<PhaseInfo, 'phase' | 'colorClass' | 'bgClass' | 'days'>> = {
-	1: { phase: 1, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', days: [1, 4] },
-	2: { phase: 2, colorClass: 'text-amber-600', bgClass: 'bg-amber-50 border-amber-200', days: [5, 10] },
-	3: { phase: 3, colorClass: 'text-emerald-600', bgClass: 'bg-emerald-50 border-emerald-200', days: [11, 17] },
-	4: { phase: 4, colorClass: 'text-blue-600', bgClass: 'bg-blue-50 border-blue-200', days: [18, 28] }
-};
-
-function getPhaseInfo(phase: CyclePhase): PhaseInfo {
-	const { t } = i18n;
+function getPhaseStyle(
+	cycleLengthDays: number
+): Record<CyclePhase, Pick<PhaseInfo, 'phase' | 'colorClass' | 'bgClass' | 'days'>> {
 	return {
-		...PHASE_STYLE[phase],
-		label: t(`phase_${phase}_label` as Parameters<typeof t>[0]),
-		description: t(`phase_${phase}_desc` as Parameters<typeof t>[0])
+		1: { phase: 1, colorClass: 'text-rose-600', bgClass: 'bg-rose-50 border-rose-200', days: [1, 4] },
+		2: { phase: 2, colorClass: 'text-amber-600', bgClass: 'bg-amber-50 border-amber-200', days: [5, 10] },
+		3: { phase: 3, colorClass: 'text-emerald-600', bgClass: 'bg-emerald-50 border-emerald-200', days: [11, 17] },
+		4: { phase: 4, colorClass: 'text-blue-600', bgClass: 'bg-blue-50 border-blue-200', days: [18, cycleLengthDays] }
 	};
 }
 
@@ -66,6 +62,7 @@ function toDateString(date: Date): string {
 function loadData(): TrackerData {
 	const empty = (): TrackerData => ({
 		cycleStartDate: null,
+		cycleLengthDays: DEFAULT_CYCLE_LENGTH,
 		logs: {},
 		appointments: [],
 		activeWaterButtons: DEFAULT_WATER_BUTTONS,
@@ -79,6 +76,9 @@ function loadData(): TrackerData {
 	if (!raw) return empty();
 	try {
 		const parsed = JSON.parse(raw) as TrackerData;
+		if (parsed.cycleLengthDays !== 28 && parsed.cycleLengthDays !== 56) {
+			parsed.cycleLengthDays = DEFAULT_CYCLE_LENGTH;
+		}
 		if (!parsed.activeWaterButtons) parsed.activeWaterButtons = DEFAULT_WATER_BUTTONS;
 		if (!parsed.waterGoalMl) parsed.waterGoalMl = DEFAULT_WATER_GOAL_ML;
 		if (!parsed.foods) parsed.foods = [];
@@ -110,14 +110,23 @@ function createTracker() {
 
 	const cycleDay = $derived((): number | null => {
 		const diffDays = cycleDaysElapsed();
-		if (diffDays === null || diffDays < 1 || diffDays > CYCLE_DAYS) return null;
+		if (diffDays === null || diffDays < 1 || diffDays > data.cycleLengthDays) return null;
 		return diffDays;
 	});
 
 	const isCycleFinished = $derived((): boolean => {
 		const diffDays = cycleDaysElapsed();
-		return diffDays !== null && diffDays >= CYCLE_DAYS;
+		return diffDays !== null && diffDays >= data.cycleLengthDays;
 	});
+
+	function getPhaseInfo(phase: CyclePhase): PhaseInfo {
+		const { t } = i18n;
+		return {
+			...getPhaseStyle(data.cycleLengthDays)[phase],
+			label: t(`phase_${phase}_label` as Parameters<typeof t>[0]),
+			description: t(`phase_${phase}_desc` as Parameters<typeof t>[0])
+		};
+	}
 
 	const currentPhase = $derived((): PhaseInfo | null => {
 		const day = cycleDay();
@@ -128,7 +137,7 @@ function createTracker() {
 	const cycleProgress = $derived((): number => {
 		const day = cycleDay();
 		if (!day) return 0;
-		return Math.round((day / CYCLE_DAYS) * 100);
+		return Math.round((day / data.cycleLengthDays) * 100);
 	});
 
 	const todayLog = $derived((): DayLog => {
@@ -185,11 +194,16 @@ function createTracker() {
 		saveData(data);
 	}
 
-	function restartCycleAtDay28(): void {
+	function restartCycleAtCycleEnd(): void {
 		if (!data.cycleStartDate) return;
 		const start = new Date(data.cycleStartDate);
-		const newStart = new Date(start.getTime() + CYCLE_DAYS * 24 * 60 * 60 * 1000);
+		const newStart = new Date(start.getTime() + data.cycleLengthDays * 24 * 60 * 60 * 1000);
 		setCycleStartDate(toDateString(newStart));
+	}
+
+	function setCycleLength(length: CycleLength): void {
+		data.cycleLengthDays = length;
+		saveData(data);
 	}
 
 	function updateWater(ml: number): void {
@@ -322,7 +336,7 @@ function createTracker() {
 			return data.waterGoalMl;
 		},
 		get cycleDays() {
-			return CYCLE_DAYS;
+			return data.cycleLengthDays;
 		},
 		get foods() {
 			return data.foods;
@@ -339,11 +353,12 @@ function createTracker() {
 			return allWaterButtons();
 		},
 		get phaseInfo() {
-			return PHASE_STYLE;
+			return getPhaseStyle(data.cycleLengthDays);
 		},
 		getPhaseInfo,
 		setCycleStartDate,
-		restartCycleAtDay28,
+		setCycleLength,
+		restartCycleAtCycleEnd,
 		updateWater,
 		setWaterGoal,
 		toggleWaterButton,

@@ -9,11 +9,11 @@ export default {
 
 	cycle_day_label: 'Jour du cycle',
 	cycle_start: 'Début',
-	cycle_end: 'Jour 28',
+	cycle_end: 'Jour {days}',
 	cycle_inactive: 'Cycle terminé ou inactif',
 	cycle_finished_title: 'Cycle terminé',
-	cycle_finished_desc: '28 jours se sont écoulés. Voulez-vous commencer un nouveau cycle ?',
-	cycle_restart_day28: 'Recommencer à partir du jour 28',
+	cycle_finished_desc: '{days} jours se sont écoulés. Voulez-vous commencer un nouveau cycle ?',
+	cycle_restart_day28: 'Recommencer à partir du jour {days}',
 	cycle_restart_manual: 'Saisir la date manuellement',
 	cycle_restart_confirm: 'Confirmer',
 
@@ -131,5 +131,8 @@ export default {
 	settings_cycle_title: 'Date de début du traitement',
 	settings_cycle_description: 'Modifiez à tout moment la date de début du cycle en cours.',
 	settings_cycle_save: 'Enregistrer la date',
-	settings_cycle_saved: 'Date mise à jour'
+	settings_cycle_saved: 'Date mise à jour',
+	settings_cycle_length_title: 'Durée du cycle',
+	settings_cycle_length_description: 'Choisissez le nombre de jours du cycle. La phase 4 s\'étend jusqu\'à la fin du cycle.',
+	cycle_length_days_suffix: 'jours'
 } as const;

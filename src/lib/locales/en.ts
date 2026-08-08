@@ -9,11 +9,11 @@ export default {
 
 	cycle_day_label: 'Cycle day',
 	cycle_start: 'Start',
-	cycle_end: 'Day 28',
+	cycle_end: 'Day {days}',
 	cycle_inactive: 'Cycle completed or inactive',
 	cycle_finished_title: 'Cycle completed',
-	cycle_finished_desc: '28 days have passed. Would you like to start a new cycle?',
-	cycle_restart_day28: 'Restart from day 28',
+	cycle_finished_desc: '{days} days have passed. Would you like to start a new cycle?',
+	cycle_restart_day28: 'Restart from day {days}',
 	cycle_restart_manual: 'Enter date manually',
 	cycle_restart_confirm: 'Confirm',
 
@@ -131,5 +131,8 @@ export default {
 	settings_cycle_title: 'Therapy start date',
 	settings_cycle_description: 'Change the start date of the current cycle at any time.',
 	settings_cycle_save: 'Save date',
-	settings_cycle_saved: 'Date updated'
+	settings_cycle_saved: 'Date updated',
+	settings_cycle_length_title: 'Cycle length',
+	settings_cycle_length_description: 'Choose how many days the cycle lasts. Phase 4 extends until the end of the cycle.',
+	cycle_length_days_suffix: 'days'
 } as const;

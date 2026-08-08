@@ -12,11 +12,11 @@ export default {
 	// Cycle card
 	cycle_day_label: 'Giorno del ciclo',
 	cycle_start: 'Inizio',
-	cycle_end: 'Giorno 28',
+	cycle_end: 'Giorno {days}',
 	cycle_inactive: 'Ciclo completato o non attivo',
 	cycle_finished_title: 'Ciclo completato',
-	cycle_finished_desc: 'Sono passati 28 giorni. Vuoi iniziare un nuovo ciclo?',
-	cycle_restart_day28: 'Ricomincia dal giorno 28',
+	cycle_finished_desc: 'Sono passati {days} giorni. Vuoi iniziare un nuovo ciclo?',
+	cycle_restart_day28: 'Ricomincia dal giorno {days}',
 	cycle_restart_manual: 'Inserisci data manualmente',
 	cycle_restart_confirm: 'Conferma',
 
@@ -142,5 +142,8 @@ export default {
 	settings_cycle_title: 'Data di inizio terapia',
 	settings_cycle_description: 'Modifica in qualunque momento la data di inizio del ciclo corrente.',
 	settings_cycle_save: 'Salva data',
-	settings_cycle_saved: 'Data aggiornata'
+	settings_cycle_saved: 'Data aggiornata',
+	settings_cycle_length_title: 'Durata del ciclo',
+	settings_cycle_length_description: 'Scegli quanti giorni dura il ciclo. La fase 4 si estende fino alla fine del ciclo.',
+	cycle_length_days_suffix: 'giorni'
 } as const;
