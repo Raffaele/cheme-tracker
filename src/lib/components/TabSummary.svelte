@@ -34,20 +34,31 @@
 		return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 	}
 
+	function getMostRecentTaken(
+		takenLog: Record<string, { date: string; takenAt: string }> | undefined
+	): { date: string; takenAt: string } | undefined {
+		if (!takenLog) return undefined;
+		return Object.values(takenLog).reduce<{ date: string; takenAt: string } | undefined>(
+			(latest, entry) =>
+				!latest || entry.date + entry.takenAt > latest.date + latest.takenAt ? entry : latest,
+			undefined
+		);
+	}
+
 	const medicineAlerts = $derived(
-		tracker.todaysMedicines.flatMap((med) =>
-			med.times
+		tracker.todaysMedicines.flatMap((med) => {
+			const mostRecentTaken = getMostRecentTaken(med.takenLog);
+			return med.times
 				.map((t) => {
 					const [h, m] = t.split(':').map(Number);
 					const diffMin = h * 60 + m - nowMinutes;
-					const takenEntry = med.takenLog?.[t];
-					const takenToday = takenEntry?.date === new Date().toISOString().split('T')[0];
-					return { med, time: t, diffMin, takenToday };
+					const takenToday = med.takenLog?.[t]?.date === new Date().toISOString().split('T')[0];
+					return { med, time: t, diffMin, takenToday, lastTaken: mostRecentTaken };
 				})
 				.filter(({ diffMin, takenToday }) =>
 					!takenToday && diffMin >= -120 && diffMin <= 30
-				)
-		)
+				);
+		})
 	);
 
 	let showAppointmentForm = $state(false);
@@ -64,6 +75,13 @@
 	function formatAppointmentDate(dateStr: string): string {
 		const d = new Date(dateStr + 'T00:00:00');
 		return d.toLocaleDateString(i18n.locale, { weekday: 'short', day: 'numeric', month: 'short' });
+	}
+
+	function formatLastTakenDate(entry: { date: string; takenAt: string }): string {
+		const isToday = entry.date === new Date().toISOString().split('T')[0];
+		return isToday
+			? i18n.t('today')
+			: new Date(entry.date + 'T00:00:00').toLocaleDateString(i18n.locale, { day: 'numeric', month: 'short' });
 	}
 
 	function submitCycleStart() {
@@ -94,7 +112,7 @@
 		<div class="min-w-0 w-full">
 			<p class="text-sm font-semibold text-violet-800">{i18n.t('med_alert_title')}</p>
 			<ul class="mt-2 space-y-3">
-				{#each medicineAlerts as { med, time, diffMin } (med.id + time)}
+				{#each medicineAlerts as { med, time, diffMin, lastTaken } (med.id + time)}
 					{@const alertKey = med.id + time}
 					<li>
 						<p class="text-sm text-violet-700">
@@ -105,6 +123,11 @@
 								<span class="opacity-75"> ({diffMin} min)</span>
 							{/if}
 						</p>
+						{#if lastTaken}
+							<p class="mt-0.5 text-xs text-violet-600 opacity-80">
+								{i18n.t('med_last_taken')}: {formatLastTakenDate(lastTaken)} <span class="font-bold">{lastTaken.takenAt}</span>
+							</p>
+						{/if}
 						{#if customTimeOpen[alertKey] !== undefined}
 							<div class="mt-2 flex items-center gap-2">
 								<input
